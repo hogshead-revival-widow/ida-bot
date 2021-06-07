@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IDA-Bot: Hilfe</title>
+  <link rel="icon" type="image/png" sizes="38x38" href="../icons/voebbot38.png">
+  <link rel="stylesheet" href="../css/bulma.min.css">
+</head>
+
+<body>
+  <section class="hero is-light">
+    <div class="hero-body">
+      <div class="columns">
+        <div class="column is-12">
+          <div class="container content">
+            <h1 class="title">
+              <img src="../icons/voebbot.svg" alt="Roboter" style="transform: translate(0, 15px)" />
+              IDA-Bot
+            </h1>
+            <h3 class="subtitle">
+              Deutsche Nachrichtenseiten im Browser über das Pressearchiv lesen
+            </h3>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-3">
+          <aside class="is-medium menu">
+            <p class="menu-label">
+              Status
+            </p>
+              <div class="tags has-addons">
+                <span class="tag">Verbindung zum Pressearchiv</span>
+                <span id="verbindung" class="tag is-success">online</span>
+              </div>
+
+              
+            <p class="menu-label">
+              FAQ
+            </p>
+            <ul class="menu-list">
+              <li>
+                <a href="#ausprobieren">Wie kann ich das ausprobieren?</a>
+              </li>
+              <li>
+                <a href="#unterstuetzte">Welche Seiten werden aktuell unterstützt?</a>
+              </li>
+              <li>
+                <a href="#funktion">Wie funktioniert das?</a>
+              </li>
+              <li>
+                <a href="#schief">Was kann schiefgehen?</a>
+              </li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="column is-9">
+          <div class="content is-medium">
+
+            <div id="ausprobieren" class="box">
+              <h4 id="let" class="title is-3">Ausprobieren</h4>
+              <p><a
+                  href="https://www.zeit.de/2021/11/soziale-ungleichheit-identitaetspolitik-diskriminierung-armut-bildung">Klicken
+                  Sie hier, um IDA-Bot auszuprobieren.</a>
+              </p>
+              </ul>
+            </div>
+
+            <div id="unterstuetzte" class="box">
+              <h4 id="let" class="title is-3">Unterstützte Websites</h4>
+              <p>Der Prototyp unterstützt <strong>zur Zeit</strong> nur eine begrenzte Auswahl an Websiten. Diese sind:</p>
+              <ul id="newssites">
+              </ul>
+            </div>
+
+            <div id="funktion" class="box">
+              <h4 class="title is-3">So funktioniert das Add-On</h4>
+              <p>Wenn die Extension einen nicht frei verfügbaren Artikel auf einer der unterstützten
+                Nachrichtenseiten
+                findet, dann:</p>
+              <ol>
+                <li>Öffnet sich im Hintergrund ein neues Tab,</li>
+                <li>In der Pressedatenbank wird automatisch im Hintergrund der Artikel gesucht</li>
+                <li>Wird der Artikel in der Pressedatenbank gefunden, dann wird der Artikeltext in das
+                  Layout der
+                  Nachrichtenseite eingesetzt.</li>
+                <li>Haben Sie die Option, ein PDF des Artikels abzuspeichern oder zu drucken.</Li>
+              </ol>
+              <p>Der Vorgang dauert im Regelfall wenige Sekunden.</p>
+            </div>
+
+            <div id="schief" class="box">
+              <h4 class="title is-3">Das kann schiefgehen</h4>
+              <p>Es kann passieren, dass IDA-Bot den Artikel nicht findet. In dem Fall werden Ihnen weitere Optionen angezeigt.
+              </p>
+
+              <p>Folgende Gründe sind möglich:</p>
+              </p>
+              <ul>
+                <li>
+                  Der Titel oder Anriss des Online-Artikels kann sich von der Druckausgabe
+                  unterscheiden, das macht das
+                  Auffinden schwierig.
+                </li>
+                <li>
+                  Artikel sind ggf. erst später in der Pressedatenbank verfügbar.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="columns is-centered">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <small>
+            <a href="mailto:test@test.de?subject=[IDA-Bot]">Feedback / Bugs</a> -
+            <a href="https://github.com/hogshead-revival-widow/ida-bot">Quelltext.</a>
+            Auf Basis des
+            <a href="https://github.com/stefanw/voebbot/">VÖBB-Bots</a> von
+            <a href="https://stefanwehrmeyer.com/">Stefan Wehrmeyer</a>.
+          </small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../lib/browser-polyfill.js"></script>
+  <script src="../build/options.js"></script>
+</body>
+
+</html>
