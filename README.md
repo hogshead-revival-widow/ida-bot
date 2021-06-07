@@ -31,7 +31,7 @@ Kurzübersicht über wichtige Dateien:
 
 ## Verweis
 
-IDA-Bot ist eine Anpassung des [VÖBBOT](https://stefanw.github.io/voebbot/). 
+IDA-Bot ist eine Anpassung des [VÖBBOT](https://github.com/stefanw/voebbot). 
 
 Kurzübersicht der Anpassungen:
 
