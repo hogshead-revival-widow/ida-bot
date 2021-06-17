@@ -6,7 +6,7 @@ export const FAILED_MESSAGE = 'failed'
 export const STATUS_MESSAGE = 'status'
 
 export const DEFAULT_URL = 'http://127.0.0.1:5000/test/start'
-export const FALLBACK_URL = 'https://127.0.0.1:5000/fallback/start''
+export const FALLBACK_URL = 'https://127.0.0.1:5000/fallback/start'
 export const FALLBACK_SOURCE = 'fallback'
 export const DEFAULT_SOURCE = 'pan'
 
