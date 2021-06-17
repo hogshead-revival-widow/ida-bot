@@ -1,7 +1,7 @@
 {
-  "name": "voebbot",
-  "version": "0.17.0",
-  "description": "VÖBBot removes paywalls of German media sites",
+  "name": "idabot",
+  "version": "0.0.9",
+  "description": "Einfacherer Zugriff auf das Pressearchiv",
   "devDependencies": {
     "eslint": "^7.22.0",
     "eslint-config-standard": "^16.0.2",
@@ -18,12 +18,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stefanw/voebbot.git"
+    "url": "git+https://github.com/hogshead-revival-widow/ida-bot.git"
   },
-  "author": "Stefan Wehrmeyer",
+  "author": "hogshead-revival-widow",
   "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/stefanw/voebbot/issues"
-  },
   "homepage": "https://stefanw.github.io/voebbot/"
 }
