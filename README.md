@@ -25,7 +25,6 @@ Kurzübersicht über wichtige Dateien:
 		* `popup/` :  Popup, das geöffnet wird, wenn das Icon in der Toolbar geklickt wird.
 		* `src/ui.js`: Nutzer_innen-Interface.
 	* zur Interaktion mit dem Pressearchiv und den Nachrichtenseiten
-		* `src/providers.js`: Prinzipelle Authentifizierung mit dem Pressearchiv
 		* `src/sources.js`: Schritte zur Navigation des Bots im Pressearchiv
 		* `src/sites.js`: Enthält die Nachrichtenseiten mit Angaben dazu, wie deren Metadaten extrahiert werden.
 
