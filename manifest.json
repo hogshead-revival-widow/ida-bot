@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "IDA-Bot",
-  "version": "0.3",
+  "version": "0.0.9",
   "description": "Vereinfacht die Suche im Pressearchiv",
   "icons": {
     "48": "icons/voebbot48.png",
@@ -10,7 +10,7 @@
   "permissions": [
     "tabs",
     "storage",
-    "http://localhost:5000"
+    "http://127.0.0.1:5000/*"
   ],
   "web_accessible_resources": [
     "css/*", "icons/*"
@@ -25,10 +25,14 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.zeit.de/*",
-        "https://www.welt.de/*",
-        "https://www.sueddeutsche.de/*",
-        "localhost:5000"
+        "*://www.zeit.de/*",
+        "*://www.sueddeutsche.de/*",
+        "*://www.faz.net/*",
+        "*://zeitung.faz.net/*",
+        "*://www.stuttgarter-zeitung.de/*",
+        "*://www.welt.de/*",
+        "*://bnn.de/*",
+        "*://www.cicero.de/*"
       ],
       "js": [
         "lib/browser-polyfill.js",
@@ -36,7 +40,8 @@
       ],
       "run_at": "document_end",
       "all_frames": true
-  }],
+    }
+  ],
   "options_ui": {
     "open_in_tab": true,
     "page": "options/options.html"
@@ -48,11 +53,6 @@
     },
     "default_popup": "popup/popup.html",
     "default_title": "IDA-Bot"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "test@test.de",
-      "strict_min_version": "57"
-    }
   }
 }
+
