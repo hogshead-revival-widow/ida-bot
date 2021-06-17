@@ -2,17 +2,19 @@ import {
   INFOBOX_HTML,
   INFOBOX_MSG_AVAILABLE, INFOBOX_MSG_NOT_REACHABLE, INFOBOX_MSG_FAILED,
   MESSAGE_ID, LOADER_ID, START_BUTTON_ID, REFRESH_BUTTON_ID, INFOBOX_ID,
-  INFOBOX_CHECK_CONNECTION, INFOBOX_START_SEARCH, INFOBOX_CANT_EXTRACT
+  INFOBOX_CHECK_CONNECTION, INFOBOX_START_SEARCH, INFOBOX_CANT_EXTRACT,
+  ARTICLE_FULLTEXT
 } from './ui.js'
 import {
   DEFAULT_URL, FAILED_MESSAGE, INIT_MESSAGE, STATUS_MESSAGE, SUCCES_MESSAGE,
-  PORT_NAME, ERROR_UNKNOWN_TYPE
+  PORT_NAME, ERROR_UNKNOWN_TYPE, INFO_FAILED_TO_FIND_CONTENT, FALLBACK_URL, FALLBACK_SOURCE, DEFAULT_SOURCE
 } from './const.js'
 import { handleIsReachable } from './utils.js'
 
 class SiteBot {
   constructor (site, root, domain = null) {
     this.site = site
+    this.site.source = DEFAULT_SOURCE
     this.root = root
     this.domain = domain
     this.onDisconnect = this.onDisconnect.bind(this)
@@ -24,36 +26,44 @@ class SiteBot {
       return
     }
 
+    if (this.site.start) {
+      this.site.start(this.root, this.getPaywall())
+    }
+
     this.showInfoBox()
     this.showUpdate(INFOBOX_CHECK_CONNECTION)
 
     handleIsReachable(window, DEFAULT_URL, (reachable) => {
       this.hideLoader()
       if (reachable) {
-        this.updateInfoBox(INFOBOX_MSG_AVAILABLE)
-        this.showButton(START_BUTTON_ID)
-        const startButton = this.shadowRoot.getElementById(START_BUTTON_ID)
-        startButton.addEventListener('click', (event) => {
-          this.hideButton(START_BUTTON_ID)
-          event.preventDefault()
-          this.startBot()
-          this.updateInfoBox(INFOBOX_START_SEARCH, true, true)
-          this.showLoader()
-        })
+        this.offerStart()
       } else {
-        this.updateInfoBox(INFOBOX_MSG_NOT_REACHABLE)
-        this.showButton(REFRESH_BUTTON_ID)
+        // Fallback
+        handleIsReachable(window, FALLBACK_URL, (fallbackReachable) => {
+          if (fallbackReachable) {
+            this.offerStart(true)
+          }else{
+            this.updateInfoBox(INFOBOX_MSG_NOT_REACHABLE)
+            this.showButton(REFRESH_BUTTON_ID)
+          }
+        })
       }
     })
   }
 
-  startBot () {
-    if (this.site.start) {
-      this.site.start(this.root, this.getPaywall())
-    } else {
-      this.hidePaywall()
-    }
-
+  offerStart(useFallback = false) {
+    this.updateInfoBox(INFOBOX_MSG_AVAILABLE)
+    this.showButton(START_BUTTON_ID)
+    const startButton = this.shadowRoot.getElementById(START_BUTTON_ID)
+    startButton.addEventListener('click', (event) => {
+      this.hideButton(START_BUTTON_ID)
+      event.preventDefault()
+      this.startBot(useFallback)
+      this.updateInfoBox(INFOBOX_START_SEARCH, true, true)
+      this.showLoader()
+    })
+  }
+  startBot (useFallback) {
     let articleInfo
     try {
       articleInfo = this.collectArticleInfo()
@@ -61,6 +71,10 @@ class SiteBot {
       this.showUpdate(INFOBOX_CANT_EXTRACT)
       return
     }
+    let source
+    if (useFallback){
+      this.site.source = FALLBACK_SOURCE
+    }    
     this.connectPort()
     this.postMessage({
       type: INIT_MESSAGE,
@@ -100,13 +114,15 @@ class SiteBot {
   }
 
   showInfoBox () {
-    const el = this.getPaywall()
-    this.shadowRoot = el.attachShadow({ mode: 'open' })
+    this.hidePaywall()
+    const shadowHost = document.createElement('p')
+    this.getMainContentArea().appendChild(shadowHost)
+    this.shadowRoot = shadowHost.attachShadow({ mode: 'closed' })
     this.shadowRoot.innerHTML = INFOBOX_HTML
   }
 
   hideInfoBox () {
-    this.shadowRoot.getElementById(INFOBOX_ID).style.display = 'none'
+    this.shadowRoot.innerHTML = ''
   }
 
   updateInfoBox (update, onlyText = false, showLoader = false) {
@@ -189,6 +205,10 @@ class SiteBot {
 
     if (event.type === FAILED_MESSAGE) {
       this.fail()
+      // Nicht gefundenen Artikel anders als Fehler behandeln
+      if (!event.content.includes(INFO_FAILED_TO_FIND_CONTENT)) {
+        console.error('failed!', event.content)
+      }
       return
     }
 
@@ -204,22 +224,10 @@ class SiteBot {
     this.updateInfoBox(INFOBOX_MSG_FAILED)
     this.showPaywall()
   }
-
-  showArticle (content) {
-    this.hideInfoBox()
-    content = content.join('')
-    if (this.site.selectors.mimic) {
-      const mimic = this.root.querySelector(this.site.selectors.mimic)
-      if (mimic !== null) {
-        content = `<div class="${mimic.className}">${content}</div>`
-      }
-    }
-    if (this.site.paragraphStyle) {
-      content = content.replace(/<p>/g, `<p class="${this.site.paragraphStyle.className || ''}" style="${this.site.paragraphStyle.style || ''}">`)
-    }
-
-    const main = this.getMainContentArea()
-    main.innerHTML = content
+  
+  showArticle (article) { 
+    const content = article[0]
+    this.shadowRoot.innerHTML = ARTICLE_FULLTEXT.replace('{{copyright}}', content.copyright).replace(/{{pdfURL}}/g, content.pdfURL).replace('{{text}}', content.text)
   }
 }
 
