@@ -1,23 +1,24 @@
-import providers from './providers.js'
 import sources from './sources.js'
 import TabRunner from './tabrunner.js'
-import { SUCCES_MESSAGE, FAILED_MESSAGE, STATUS_MESSAGE } from './const.js'
+import {
+  SUCCES_MESSAGE, FAILED_MESSAGE, STATUS_MESSAGE,
+  ERROR_UNKNOWN_SOURCE, INFO_FAILED_TO_FIND_CONTENT
+} from './const.js'
+// eslint-disable-next-line no-unused-vars
 import { interpolate, makeTimeout } from './utils.js'
 
 const PHASE_LOGIN = 'login'
 const PHASE_SEARCH = 'search'
 
 class SourceBot {
-  constructor (sourceId, providerId, sourceParams, articleInfo, callback) {
+  constructor(sourceId, sourceParams, articleInfo, callback) {
     this.step = 0
     this.phase = PHASE_LOGIN
 
     this.sourceId = sourceId
+    
     this.source = sources[sourceId]
-
-    this.providerId = providerId
-    this.provider = providers[providerId]
-
+    
     this.sourceParams = sourceParams
     this.articleInfo = articleInfo
     this.callback = callback
@@ -25,16 +26,15 @@ class SourceBot {
     this.onTabUpdated = this.onTabUpdated.bind(this)
   }
 
-  getParams () {
+  getParams() {
     return Object.assign(
       {},
       this.source.defaultParams || {},
-      this.provider.params[this.sourceId],
       this.sourceParams
     )
   }
 
-  async run () {
+  async run() {
     const url = this.makeUrl(this.source.start)
     const tab = await browser.tabs.create({
       url: url,
@@ -46,11 +46,11 @@ class SourceBot {
     browser.tabs.onUpdated.addListener(this.onTabUpdated)
   }
 
-  cleanUp () {
+  cleanUp() {
     browser.tabs.onUpdated.removeListener(this.onTabUpdated)
   }
 
-  onTabUpdated (tabId, changeInfo) {
+  onTabUpdated(tabId, changeInfo) {
     if (this.done) {
       this.cleanUp()
       return
@@ -64,7 +64,7 @@ class SourceBot {
     }
   }
 
-  async runNextsourcestep () {
+  async runNextsourcestep() {
     const loggedIn = await this.isLoggedIn()
     if (loggedIn) {
       this.step = 0
@@ -73,7 +73,7 @@ class SourceBot {
     await this.runActionsOfCurrentStep()
   }
 
-  async isLoggedIn () {
+  async isLoggedIn() {
     if (this.phase === PHASE_LOGIN) {
       const result = await browser.tabs.executeScript(this.tabId, {
         code: `document.querySelector("${this.source.loggedIn}") !== null`
@@ -84,23 +84,23 @@ class SourceBot {
     return false
   }
 
-  getActions () {
-    const actionList = this.provider[this.phase] || this.source[this.phase]
-    const actions = actionList[this.step]
+  getActions() {
+    const actions = this.source[this.phase][this.step]
     if (Array.isArray(actions)) {
       return actions
     }
-    throw new Error('Unknown action in source')
+    console.log(ERROR_UNKNOWN_SOURCE, actions)
+    //throw new Error(ERROR_UNKNOWN_SOURCE)
   }
 
-  isFinalStep () {
+  isFinalStep() {
     return (
       this.phase === PHASE_SEARCH &&
       this.step === this.source[this.phase].length - 1
     )
   }
 
-  handleAction (action) {
+  handleAction(action) {
     if (action.message) {
       // message does not need to run through tabrunner
       this.callback({
@@ -119,7 +119,7 @@ class SourceBot {
     return action
   }
 
-  async runActionsOfCurrentStep () {
+  async runActionsOfCurrentStep() {
     const actions = this.getActions()
     let result
     for (let action of actions) {
@@ -153,9 +153,9 @@ class SourceBot {
     }
   }
 
-  finalize (result) {
+  finalize(result) {
     this.done = true
-    if (result.length > 0) {
+    if ( result!== undefined && result !== null && result.length > 0) {
       this.callback({
         type: SUCCES_MESSAGE,
         message: result
@@ -164,29 +164,29 @@ class SourceBot {
       browser.tabs.remove(this.tabId)
       this.cleanUp()
     } else {
-      this.fail('failed to find content')
+      this.fail(INFO_FAILED_TO_FIND_CONTENT)
     }
   }
 
-  fail (message) {
-    if (message !== 'failed to find content') {
-      console.error(message)
-    }
+  fail(message) {
+    if (message !== INFO_FAILED_TO_FIND_CONTENT) {
+      console.log(message)
+    } 
     this.callback({
-      type: FAILED_MESSAGE,
-      message: message
-    })
+        type: FAILED_MESSAGE,
+        message: message
+      })
     this.cleanUp()
   }
 
-  makeUrl (url) {
+  makeUrl(url) {
     url = interpolate(url, this.articleInfo, '', encodeURIComponent)
     const params = this.getParams()
     url = interpolate(url, params, 'source', encodeURIComponent)
     return url
   }
 
-  activateTab () {
+  activateTab() {
     browser.tabs.update(this.tabId, {
       active: true
     })
