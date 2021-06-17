@@ -7,6 +7,7 @@
   <title>IDA-Bot: Hilfe</title>
   <link rel="icon" type="image/png" sizes="38x38" href="../icons/voebbot38.png">
   <link rel="stylesheet" href="../css/bulma.min.css">
+  <link rel="stylesheet" href="../css/bulma.dark.css">
 </head>
 
 <body>
@@ -32,18 +33,11 @@
   <section class="section">
     <div class="container">
       <div class="columns">
-        <div class="column is-3">
+        <div class="column is-4">
           <aside class="is-medium menu">
-            <p class="menu-label">
-              Status
-            </p>
-              <div class="tags has-addons">
-                <span class="tag">Verbindung zum Pressearchiv</span>
-                <span id="verbindung" class="tag is-success">online</span>
-              </div>
-
+         
               
-            <p class="menu-label">
+            <p class="menu-label" id="faq">
               FAQ
             </p>
             <ul class="menu-list">
@@ -57,29 +51,36 @@
                 <a href="#funktion">Wie funktioniert das?</a>
               </li>
               <li>
+                <a href="#voraussetzung">Gibt es Voraussetzungen?</a>
+              </li>
+
+              <li>
                 <a href="#schief">Was kann schiefgehen?</a>
+              </li>
+              <li>
+                <a href="#hilfe">Wo finde ich Hilfe, wenn IDA-Bot meinen Artikel nicht findet?</a>
               </li>
             </ul>
           </aside>
         </div>
 
-        <div class="column is-9">
+        <div class="column is-8">
           <div class="content is-medium">
 
             <div id="ausprobieren" class="box">
               <h4 id="let" class="title is-3">Ausprobieren</h4>
-              <p><a
-                  href="https://www.zeit.de/2021/11/soziale-ungleichheit-identitaetspolitik-diskriminierung-armut-bildung">Klicken
-                  Sie hier, um IDA-Bot auszuprobieren.</a>
-              </p>
+               <a
+                  href="https://www.zeit.de/2021/11/soziale-ungleichheit-identitaetspolitik-diskriminierung-armut-bildung" target="_blank">Hier entlang (Link).</a>
               </ul>
             </div>
 
             <div id="unterstuetzte" class="box">
               <h4 id="let" class="title is-3">Unterstützte Websites</h4>
-              <p>Der Prototyp unterstützt <strong>zur Zeit</strong> nur eine begrenzte Auswahl an Websiten. Diese sind:</p>
+              <p>Der Prototyp unterstützt <strong>zur Zeit</strong> nur eine begrenzte Auswahl an Websiten.</p>
+              <p>Diese sind:</p>
               <ul id="newssites">
               </ul>
+              <p class="small" style="text-align: right;"><a href="#faq">[^]</a></p>
             </div>
 
             <div id="funktion" class="box">
@@ -88,14 +89,24 @@
                 Nachrichtenseiten
                 findet, dann:</p>
               <ol>
-                <li>Öffnet sich im Hintergrund ein neues Tab,</li>
-                <li>In der Pressedatenbank wird automatisch im Hintergrund der Artikel gesucht</li>
-                <li>Wird der Artikel in der Pressedatenbank gefunden, dann wird der Artikeltext in das
-                  Layout der
-                  Nachrichtenseite eingesetzt.</li>
-                <li>Haben Sie die Option, ein PDF des Artikels abzuspeichern oder zu drucken.</Li>
+                <li>Öffnet sich im Hintergrund ein neues Tab.</li>
+                <li>In der Pressedatenbank wird automatisch der Artikel gesucht.</li>
+                <li>Wird der Artikel gefunden, wird der Volltext und das PDF angezeigt.</li>
               </ol>
               <p>Der Vorgang dauert im Regelfall wenige Sekunden.</p>
+              <p class="small" style="text-align: right;"><a href="#faq">[^]</a></p>
+            </div>
+
+            <div id="voraussetzung" class="box">
+              <h4 class="title is-3">Voraussetzungen</h4>
+              <p>Die Seite <a href="pressearchiv">https://pressearchiv</a>
+                sollte erreichbar sein. Dann müssen Sie nichts tun.</p>
+
+                <p>Wenn das nicht der Fall ist, stellt IDA-Bot eine Verbindung zum Pressearchiv via Applikationsproxy her.
+                   Er meldet sich dann und braucht kurz Ihre Mitwirkung.</p>
+               
+              <p>IDA-Bot funktioniert also <strong>überall</strong>, wo Sie diese Erweiterung installieren können. Auch von <strong>unterwegs</strong> und ohne spezielle Software wie z. B. VPN.</p>
+              <p class="small" style="text-align: right;"><a href="#faq">[^]</a></p>
             </div>
 
             <div id="schief" class="box">
@@ -103,19 +114,30 @@
               <p>Es kann passieren, dass IDA-Bot den Artikel nicht findet. In dem Fall werden Ihnen weitere Optionen angezeigt.
               </p>
 
-              <p>Folgende Gründe sind möglich:</p>
+              <p>Das sind mögliche Gründe:</p>
               </p>
               <ul>
                 <li>
-                  Der Titel oder Anriss des Online-Artikels kann sich von der Druckausgabe
-                  unterscheiden, das macht das
-                  Auffinden schwierig.
+                  Anriss oder Titel können sich von der Druckausgabe unterscheiden.
                 </li>
+                <li>Möglicherweise ist der Artikel online-exklusiv.</li>
                 <li>
-                  Artikel sind ggf. erst später in der Pressedatenbank verfügbar.
-                </li>
+                  Artikel aus der gedruckten Ausgabe sind ggf. noch nicht verfügbar.</li>
               </ul>
+              <p class="small" style="text-align: right;"><a href="#faq">[^]</a></p>
             </div>
+
+            <div id="hilfe" class="box">
+              <h4 class="title is-3">Hilfe (Platzhalter)</h4>
+              <p>Funktioniert nicht?</p>
+              <ul>
+                <li>Melden Sie sich bei <a href="mailto:idaBotHelp@gmail.com">IDA-Bot Hilfe</li>
+              </ul>
+              <p class="small" style="text-align: right;"><a href="#faq">[^]</a></p>
+            </div>
+
+            
+          
           </div>
         </div>
       </div>
@@ -126,10 +148,10 @@
       <div class="field is-grouped is-grouped-multiline">
         <div class="control">
           <small>
-            <a href="mailto:test@test.de?subject=[IDA-Bot]">Feedback / Bugs</a> -
+            <a href="mailto:idaBotHelp@gmail.com?subject=[IDA-Bot]">Feedback / Bugs</a> -
             <a href="https://github.com/hogshead-revival-widow/ida-bot">Quelltext.</a>
             Auf Basis des
-            <a href="https://github.com/stefanw/voebbot/">VÖBB-Bots</a> von
+            <a href="https://github.com/stefanw/voebbot/">VÖB-Bots</a> von
             <a href="https://stefanwehrmeyer.com/">Stefan Wehrmeyer</a>.
           </small>
         </div>
