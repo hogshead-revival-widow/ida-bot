@@ -35,6 +35,9 @@ IDA-Bot ist eine Anpassung des [VÖBBOT](https://github.com/stefanw/voebbot).
 
 Kurzübersicht der Anpassungen:
 
+* Anpassung der Struktur 
+* Fallback-Modus
+* Reduzierung der Metadaten der `sites`
 * vollständige Überarbeitung des Userinterfaces
 * Hinzufügung von pressearchiv-spezifischen Funktionen
 * Anpassung der Suche auf das Pressearchiv
