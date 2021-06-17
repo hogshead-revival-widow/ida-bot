@@ -31,6 +31,7 @@ class TabRunner {
           code: actionCode[0]
         })
       result = result[0]
+      console.log('Skript run:', result)
     }
     if (actionCode.length === 1) {
       return result
@@ -58,40 +59,52 @@ class TabRunner {
     } else if (action.click) {
       return [`document.querySelector('${action.click}').click()`]
     } else if (action.extract) {
-      if (action.getPDF) {
-        const pdfIcon = browser.extension.getURL('icons/pdf.svg')
-        return [`function addPDFLink (textElements){
-                  const sessionID = document.querySelector('#session_id').value;
-                  const url = new URL(document.querySelector('#detail_form').action);
-                  if (sessionID !== undefined && url !== undefined){
-                    const docID = url.searchParams.get('sa_docid_for_detail');
-                    const rootUrl = window.location.protocol + '//' + window.location.host + window.location.pathname.replace('/base.do', '') + '/'
-                    if (docID === undefined)
-                    { 
-                      return textElements 
-                    }  
-                    const pdfLInk = rootUrl + 'showPDF.htm?' + docID + '&session=' + sessionID 
-                    // unten und oben den Link einfügen
-                    // unten und oben den Link einfügen
-                    textElements.unshift(pdfLink);
-                    textElements.push(pdfLink);
-                  }
-                  return textElements
-                };
-                const textElements = Array.from(document.querySelectorAll('#dt_dv_atext')).map(function(el) {
-                  return el.outerHTML
-                });
-              addPDFLink(textElements)`,
-        function (result) {
-          if (result === null) { result = [] }
-          return result
-        }]
-      } else {
-        return [
-          `Array.from(document.querySelectorAll('${action.extract}')).map(function(el) {
-            return el.outerHTML
-          })`]
-      }
+      return [`function getPDFUrl (){
+        const sessionID = document.querySelector('#session_id').value;
+        const url = new URL(document.querySelector('#detail_form').action);
+        if (sessionID !== undefined && url !== undefined){
+          const docID = url.searchParams.get('sa_docid_for_detail');
+          const rootUrl = window.location.protocol + '//' + window.location.host + window.location.pathname.replace('/base.do', '') + '/'
+          if (docID === undefined)
+          { 
+            return 
+          }  
+          const pdfURL = rootUrl + 'showPDF.htm?sa_archiv=T&sa_service=../../../../BC/zat_pdf_handler&sa_docid=' + docID + '&sa_pdf_type=PDF-DETAI&sa_display_pagepdf=&sa_session=' + sessionID + '&sa_application=zat_web_text2'
+          return pdfURL
+        } else {
+          return
+        }
+      };
+      function getText(){
+        const article = document.querySelector('#dt_dv_atext').innerHTML;
+        function excludeCopyright(el){
+          if(! el.innerText.startsWith('Nur für internen Gebrauch')){ 
+          return el.outerHTML
+          }
+        }
+        
+        return Array.from(document.querySelectorAll('p')).map(excludeCopyright).join('').replace('</span>', '').replace('<span class="highlighted">','')
+      };
+      function getCopyright(){
+        const article = document.querySelector('#dt_dv_atext').innerHTML;
+        function includeCopyright(el){
+          if(el.innerText.startsWith('Nur für internen Gebrauch')){
+              return el.outerHTML
+          }
+        }
+        return Array.from(document.querySelectorAll('p')).map(includeCopyright).join('')
+      };
+      function getArticle(){
+        const text = {
+          text: getText(), // ggf noch "von"-zeile streichen?
+          copyright: getCopyright(),
+          pdfURL: getPDFUrl()
+
+        }
+        return [text] 
+      };
+      getArticle();
+      `] 
     }
   }
 }
