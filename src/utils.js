@@ -22,7 +22,7 @@ function makeTimeout (ms) {
 async function handleIsReachable (window, url, handleFunction) {
   window.fetch(url, { mode: 'no-cors' })
     .then(response => { handleFunction(true) })
-    .catch(error => { console.log(error); handleFunction(false) })
+    .catch(error => { handleFunction(false) })
 }
 
 export {
