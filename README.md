@@ -33,6 +33,8 @@ Kurzübersicht über wichtige Dateien:
 
 IDA-Bot ist eine Anpassung des [VÖBBOT](https://github.com/stefanw/voebbot). 
 
+## Anpassungen
+
 Kurzübersicht der Anpassungen:
 
 * Anpassung der Struktur 
@@ -43,3 +45,8 @@ Kurzübersicht der Anpassungen:
 * Anpassung der Suche auf das Pressearchiv
 * Entfernung aller nicht benötigten Funktionen
 
+## Icons
+
+* mail.svg (CC0): [Quelle](https://commons.wikimedia.org/wiki/File:Mail_(89507)_-_The_Noun_Project.svg)
+* pdf.svg (CC0): [Quelle](https://commons.wikimedia.org/wiki/File:PDF_(89522)_-_The_Noun_Project.svg)
+* alle anderen Icons (GPL): [Quelle](https://github.com/stefanw/voebbot) (angepasst; Farbe geändert)
