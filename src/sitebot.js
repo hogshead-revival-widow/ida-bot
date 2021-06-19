@@ -7,7 +7,8 @@ import {
 } from './ui.js'
 import {
   DEFAULT_URL, FAILED_MESSAGE, INIT_MESSAGE, STATUS_MESSAGE, SUCCES_MESSAGE,
-  PORT_NAME, ERROR_UNKNOWN_TYPE, INFO_FAILED_TO_FIND_CONTENT, FALLBACK_URL, FALLBACK_SOURCE, DEFAULT_SOURCE
+  PORT_NAME, ERROR_UNKNOWN_TYPE, INFO_FAILED_TO_FIND_CONTENT, FALLBACK_URL, FALLBACK_SOURCE, DEFAULT_SOURCE,
+  HAS_FALLBACK
 } from './const.js'
 import { handleIsReachable } from './utils.js'
 
@@ -37,18 +38,24 @@ class SiteBot {
       this.hideLoader()
       if (reachable) {
         this.offerStart()
-      } else {
+      } else if (HAS_FALLBACK) {
         // Fallback
         handleIsReachable(window, FALLBACK_URL, (fallbackReachable) => {
           if (fallbackReachable) {
             this.offerStart(true)
           }else{
-            this.updateInfoBox(INFOBOX_MSG_NOT_REACHABLE)
-            this.showButton(REFRESH_BUTTON_ID)
+            this.showNotReachable()
           }
         })
+      }else{
+        this.showNotReachable()
       }
     })
+  }
+
+  showNotReachable() {
+    this.updateInfoBox(INFOBOX_MSG_NOT_REACHABLE)
+    this.showButton(REFRESH_BUTTON_ID)
   }
 
   offerStart(useFallback = false) {
