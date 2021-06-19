@@ -9,6 +9,7 @@ export const DEFAULT_URL = 'http://127.0.0.1:5000/test/start'
 export const FALLBACK_URL = 'https://127.0.0.1:5000/fallback/start'
 export const FALLBACK_SOURCE = 'fallback'
 export const DEFAULT_SOURCE = 'pan'
+export const HAS_FALLBACK = true
 
 // Fehler
 export const ERROR_UNKNOWN_TYPE = 'Unbekannter Typ'
