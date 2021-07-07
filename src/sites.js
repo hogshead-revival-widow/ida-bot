@@ -1,10 +1,19 @@
-const extractQuery = (node) => `"${node.innerText.split(' ').slice(2, 10).join(' ')}"`
+const extractQuery = (node) => `"${node.innerText.split(' ').slice(3, 11).join(' ')}"`
+
+function zeitConditionalElement (){
+  const paragraphs = document.querySelectorAll('.article__item .paragraph')
+  if(paragraphs.length > 1){
+      return paragraphs[1]
+  }
+  return paragraphs[0]
+}
+
 export default {
   'www.zeit.de': {
     selectors: {
-      // Aus welchem Element des Textes soll extrahiert werden, um in Archiv danach zu suchen?
+      // Aus welchem Element des Textes soll extrahiert werden, um in PAN danach zu suchen?
       query: () => {
-        return extractQuery(document.querySelector('.article__item .paragraph'))
+        return extractQuery(zeitConditionalElement())
       },
       // Wo ist die Paywall?
       paywall: '.gate.article__item',
@@ -17,8 +26,20 @@ export default {
 
     },
     sourceParams: {
-      // Parameter aus Archiv: Quelle, bekannte Operatoren sind erlaubt (&, /,...)
+      // Parameter aus PAN: Quelle, bekannte Operatoren sind erlaubt (&, /,...)
       dbShortcut: 'ZEIT / Zeit Hamburg / Zeit-Magazin'
+    }
+  },
+  'www.badische-zeitung.de': {
+    selectors: {
+      query: () => {
+        return extractQuery(document.querySelector('.freemium__preview'))
+      },
+      paywall: '.freemium__content.freemium__content--v2',
+      main: '.freemium__preview',
+    },
+    sourceParams: {
+      dbShortcut: 'Badische Zeitung*'
     }
   },
   'www.sueddeutsche.de': {
@@ -69,15 +90,18 @@ export default {
     }
   },
   'bnn.de': {
+    // Bei Longreads werden andere Klassen genutzt
     selectors: {
       query: () => {
-        return extractQuery(document.querySelector('.article__body p'))
+        
+        return extractQuery(document.querySelector('.article__body p, .longread-content'))
       },
-      paywall: '.article__paywall',
-      main: '.article__body'
+      paywall: '.article__paywall, .paywall',
+      main: '.article__body, .longread-content'
     },
     start: (root) => {
-      root.querySelector('.article__paywall.paywall').classList.remove('paywall')
+      const el = root.querySelector('.article__paywall.paywall')
+      el?el.classList.remove('paywall'):true
     },
     sourceParams: {
       dbShortcut: 'Badische Neues*'
