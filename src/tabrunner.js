@@ -31,7 +31,7 @@ class TabRunner {
           code: actionCode[0]
         })
       result = result[0]
-      console.log('Skript run:', result)
+      console.log('runScript (in tabrunner):', result)
     }
     if (actionCode.length === 1) {
       return result
@@ -85,19 +85,9 @@ class TabRunner {
         
         return Array.from(document.querySelectorAll('p')).map(excludeCopyright).join('').replace('</span>', '').replace('<span class="highlighted">','')
       };
-      function getCopyright(){
-        const article = document.querySelector('#dt_dv_atext').innerHTML;
-        function includeCopyright(el){
-          if(el.innerText.startsWith('Nur für internen Gebrauch')){
-              return el.outerHTML
-          }
-        }
-        return Array.from(document.querySelectorAll('p')).map(includeCopyright).join('')
-      };
       function getArticle(){
         const text = {
-          text: getText(), // ggf noch "von"-zeile streichen?
-          copyright: getCopyright(),
+          text: getText(), 
           pdfURL: getPDFUrl()
 
         }
