@@ -30,7 +30,6 @@ class SiteBot {
     if (this.site.start) {
       this.site.start(this.root, this.getPaywall())
     }
-
     this.showInfoBox()
     this.showUpdate(INFOBOX_CHECK_CONNECTION)
 
@@ -88,15 +87,25 @@ class SiteBot {
       source: this.site.source,
       sourceParams: this.site.sourceParams,
       domain: this.domain,
-      articleInfo: articleInfo
+      articleInfo: articleInfo,
+      site: this.site
     })
   }
 
   getPaywall () {
     return this.root.querySelector(this.site.selectors.paywall)
   }
-
+  hasAdditionalPaywallTest () {
+    return "additionalPaywallTest" in this.site === true
+  }
+  getAdditionalPaywallTest () {
+    return this.site.additionalPaywallTest
+  }
   hasPaywall () {
+    if(this.hasAdditionalPaywallTest()){
+      const additionalTest = this.getAdditionalPaywallTest()
+      return ((this.getPaywall() !== null) && (additionalTest() !== false))
+    }
     return this.getPaywall() !== null
   }
 
@@ -178,6 +187,8 @@ class SiteBot {
     let q = articleInfo.query
     // remove some special chars
     q = q.replace(/[!,:?;'/()]/g, '')
+    // PAN-only: replace newlines, dash with space
+    q = q.replace(/[\n-]/g, ' ')
     // remove non-leading/trailing quotes
     q = q.replace(/(.)"(.)/g, '$1$2')
     articleInfo.query = q
@@ -234,7 +245,7 @@ class SiteBot {
   
   showArticle (article) { 
     const content = article[0]
-    this.shadowRoot.innerHTML = ARTICLE_FULLTEXT.replace('{{copyright}}', content.copyright).replace(/{{pdfURL}}/g, content.pdfURL).replace('{{text}}', content.text)
+    this.shadowRoot.innerHTML = ARTICLE_FULLTEXT.replace(/{{pdfURL}}/g, content.pdfURL).replace('{{text}}', content.text)
   }
 }
 
