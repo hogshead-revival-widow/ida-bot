@@ -1,16 +1,15 @@
 {
   "manifest_version": 2,
-  "name": "IDA-Bot",
-  "version": "0.0.9",
+  "name": "IDA-Bot (RFA)",
+  "version": "0.9.4",
   "description": "Vereinfacht die Suche im Pressearchiv",
   "icons": {
     "48": "icons/voebbot48.png",
     "96": "icons/voebbot96.png"
   },
   "permissions": [
-    "tabs",
     "storage",
-    "http://127.0.0.1:5000/*"
+     "http://127.0.0.1:5000/*"
   ],
   "web_accessible_resources": [
     "css/*", "icons/*"
@@ -28,10 +27,11 @@
         "*://www.zeit.de/*",
         "*://www.sueddeutsche.de/*",
         "*://www.faz.net/*",
-        "*://zeitung.faz.net/*",
+        "*://www.badische-zeitung.de/*",
         "*://www.stuttgarter-zeitung.de/*",
         "*://www.welt.de/*",
         "*://bnn.de/*",
+        "*://zeitung.faz.net/*",
         "*://www.cicero.de/*"
       ],
       "js": [
