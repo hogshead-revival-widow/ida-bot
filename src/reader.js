@@ -1,22 +1,11 @@
 import {
   INIT_MESSAGE, GOTOTAB_MESSAGE, SUCCES_MESSAGE,
-  FAILED_MESSAGE, STATUS_MESSAGE, DEFAULT_PROVIDER,
-  ERROR_UNKNOWN_TYPE
-} from './const.js'
+  FAILED_MESSAGE, STATUS_MESSAGE } from './const.js'
 import SourceBot from './sourcebot.js'
 
-const storageItems = {}
 
-function retrieveStorage () {
-  const defaults = {
-    provider: DEFAULT_PROVIDER
-  }
-  return browser.storage.sync.get(defaults).then(function (items) {
-    for (const key in items) {
-      storageItems[key] = items[key]
-    }
-  })
-}
+
+
 
 class Reader {
   constructor (port) {
@@ -32,16 +21,13 @@ class Reader {
   }
 
   start () {
-    this.storageUpdated = retrieveStorage()
     this.port.onMessage.addListener(this.onMessage)
     this.port.onDisconnect.addListener(this.onDisconnect)
   }
 
   onMessage (message) {
     if (message.type === INIT_MESSAGE) {
-      this.storageUpdated.then(() => {
-        this.retrieveArticle(message)
-      })
+      this.retrieveArticle(message)
     } else if (message.type === GOTOTAB_MESSAGE) {
       if (this.sourceBot) {
         this.sourceBot.activateTab()
@@ -67,9 +53,9 @@ class Reader {
     this.domain = message.domain
     this.sourceBot = new SourceBot(
       message.source,
-      storageItems.provider,
       message.sourceParams,
       message.articleInfo,
+      message.site,
       this.botCallback
     )
     this.sourceBot.run()
@@ -84,7 +70,6 @@ class Reader {
       this.success(event)
     } else {
       this.cleanUp()
-      throw new Error(ERROR_UNKNOWN_TYPE)
     }
   }
 
