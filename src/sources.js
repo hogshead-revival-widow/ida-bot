@@ -1,8 +1,28 @@
 import { DEFAULT_URL, FALLBACK_URL, INFO_FAILED_TO_FIND_CONTENT } from './const.js'
-import {
-  MSG_LOGIN_SELECTION, MSG_LOGIN_ACCESS, MSG_START_SEARCH,
-  MSG_ARTICLE, MSG_WAIT, MSG_INTERACTION_SSO
-} from './ui.js'
+import { MSG_START_SEARCH, MSG_ARTICLE, MSG_WAIT, MSG_INTERACTION_SSO } from './ui.js'
+
+/* Achtung, Unterschiede bei Weiterleitungen für Firefox:
+
+Unten nach Action, die mit "click: '#retr_buttonSuchen'" abschließt
+und vor Action, die mit MSG_ARTICLE beginnt, Wartezeit hinzufügen:
+
+       .... 
+        { click: '#retr_datumZuruecksetzen' },
+          { click: '#retr_buttonSuchen' }
+        ],
+        [
+          { wait: 600000} /// Warten auf Weiterleitungen, nur Firefox
+        ],
+        [
+          { message: MSG_ARTICLE },
+          { click: '.sh_a_hit_access_ok' },
+          { failOnMissing: '.sh_a_hit_access_ok', failure: INFO_FAILED_TO_FIND_CONTENT }
+        ],
+       .... 
+
+
+*/ 
+
 
 export default {
     'pan': {
@@ -23,7 +43,7 @@ export default {
           { click: '#retr_buttonZuruecksetzen' },
           { fill: { selector: '#retr_std_inp_sbegr', isQuery: true } },
           { fill: { selector: '#retr_inp_quell', isSource: true } },
-          { click: '#id_verknuep_phrase' },
+          { click: '#id_verknuep_phrase'},
           // ohne Datumsbeschränkung suchen, Voreinstellung: 1 Jahr
           { click: '#retr_datumZuruecksetzen' },
           { click: '#retr_buttonSuchen' }
@@ -58,7 +78,7 @@ export default {
           { click: '#retr_buttonZuruecksetzen' },
           { fill: { selector: '#retr_std_inp_sbegr', isQuery: true } },
           { fill: { selector: '#retr_inp_quell', isSource: true } },
-          { click: '#id_verknuep_phrase' },
+          { click: '#id_verknuep_phrase'},
           // ohne Datumsbeschränkung suchen, Voreinstellung: 1 Jahr
           { click: '#retr_datumZuruecksetzen' },
           { click: '#retr_buttonSuchen' }
