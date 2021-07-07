@@ -4,14 +4,13 @@ import {
   SUCCES_MESSAGE, FAILED_MESSAGE, STATUS_MESSAGE,
   ERROR_UNKNOWN_SOURCE, INFO_FAILED_TO_FIND_CONTENT
 } from './const.js'
-// eslint-disable-next-line no-unused-vars
 import { interpolate, makeTimeout } from './utils.js'
 
 const PHASE_LOGIN = 'login'
 const PHASE_SEARCH = 'search'
 
 class SourceBot {
-  constructor(sourceId, sourceParams, articleInfo, callback) {
+  constructor(sourceId, sourceParams, articleInfo, site, callback) {
     this.step = 0
     this.phase = PHASE_LOGIN
 
@@ -21,6 +20,7 @@ class SourceBot {
     
     this.sourceParams = sourceParams
     this.articleInfo = articleInfo
+    this.site = site
     this.callback = callback
 
     this.onTabUpdated = this.onTabUpdated.bind(this)
