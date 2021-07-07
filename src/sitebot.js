@@ -189,7 +189,7 @@ class SiteBot {
     q = q.replace(/[!,:?;'/()]/g, '')
     // PAN-only: replace newlines, dash with space
     q = q.replace(/[\n-]/g, ' ')
-    // remove non-leading/trailing quotes
+    // remove non-leading/trailing quotes 
     q = q.replace(/(.)"(.)/g, '$1$2')
     articleInfo.query = q
     return articleInfo
