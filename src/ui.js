@@ -1,18 +1,5 @@
 const mailContactArchive = 'idaBotHelp@gmail.com'
 const articleURL = new URL(window.location.href)
-
-// Testbetrieb
-
-const CONTACT_TEST_RUN =  `
-<aside class="card-header">
-<p class="card-header-title"><a href="mailto:idaBotHelp@gmail.com?subject=[IDA-Bot-Testbetrieb] [${browser.runtime.getManifest().version}] Problem auf [${articleURL.hostname.replace('www.', '')}]&body=Beabsichtigter Aufruf von: ${articleURL} %0D%0A%0D%0A Das ging schief: %0D%0A%0D%0A ggf. Besonderheiten: ">[Testbetrieb] Funktioniert nicht, wie erwartet?</a></p>
-    <a href="mailto:idaBotHelp@gmail.com?subject=[IDA-Bot-Testbetrieb] [${browser.runtime.getManifest().version}] Problem auf [${articleURL.hostname.replace('www.', '')}]&body=Beabsichtigter Aufruf von: ${articleURL} %0D%0A%0D%0A Das habe ich erwartet: %0D%0A%0D%0A Das ging schief: %0D%0A%0D%0A ggf. Besonderheiten: " class="card-header-icon is-size-2">
-        <span class="icon is-size-2"> 
-            <img src="${browser.extension.getURL('icons/mail.svg')}" alt="Mail">
-        </span> 
-    </a>
-</aside>`
-
 // Status'
 
 export const MSG_WAIT = 'Warte auf Rückmeldung...';
@@ -20,7 +7,9 @@ export const MSG_LOGIN_SELECTION = 'Archiv wird ausgewählt...'
 export const MSG_LOGIN_ACCESS = 'Konto wird eingeloggt...'
 export const MSG_START_SEARCH = 'Suche wird durchgeführt...'
 export const MSG_ARTICLE = 'Artikel wird aufgerufen...'
-export const MSG_INTERACTION_SSO = 'Bitte gehen Sie zum  geöffneten Tab und loggen sich dort ein. Tipp: Wenn Sie das Häkchen dort setzen, werden Sie erst in 30 Tagen wieder gefragt.';
+export const MSG_INTERACTION_SSO = `Bitte loggen Sie sich im geöffneten Tab (rechts) ein. 
+Warte...`
+export const MSG_CLEAN_UP = 'Räume auf...'
 
 // Infobox
 
@@ -33,7 +22,7 @@ export const FOOTER_ID = 'infobox_footer'
 
 export const INFOBOX_CHECK_CONNECTION = 'Prüfe Verbindung zum Pressearchiv...'
 export const INFOBOX_START_SEARCH = 'Starte Suche...'
-export const INFOBOX_CANT_EXTRACT = 'Beim Extrahieren der Artikeldaten trat ein Fehler auf.'
+export const INFOBOX_CANT_EXTRACT = `Das sollte nicht passieren: Beim Extrahieren der Artikeldaten trat ein Fehler auf. Bitte melden Sie den Fehler <a href="mailto:${mailContactArchive}?subject=[IDA-Bot] [${browser.runtime.getManifest().version}] Problem auf [${articleURL.hostname.replace('www.', '')}]&body=Beabsichtigter Aufruf von: ${articleURL} %0D%0A%0D%0A Das ging schief: Fehler beim Extrahieren der Artikeldaten %0D%0A%0D%0A ggf. Besonderheiten:">hier</a>`
 
 
 
@@ -69,15 +58,14 @@ export const INFOBOX_HTML =
 
                 </footer>
             </div>
-        ${CONTACT_TEST_RUN}
         </div>`
 export const INFOBOX_MSG_AVAILABLE = `
-IDA-Bot kann auf dieser Website für Sie automatisch nach dem Volltext und der PDF dieses Artikels suchen.`
+Wenn Sie den den Artikel für internen Zwecke benötigen, kann IDA-Bot hier für Sie danach suchen.`
 
 export const INFOBOX_MSG_NOT_REACHABLE = `
 IDA-Bot kann das Pressearchiv nicht erreichen. Tun Sie folgendes, um nach dem Volltext suchen zu können:<br />
 <ol type="1">
-  <li>Verbinden Sie sich mit dem Archiv-LAN, -WLAN oder VPN.</li>
+  <li>Verbinden Sie sich mit dem internen LAN, -WLAN oder VPN.</li>
   <li>Aktualisieren Sie diese Seite.</li>
 </ol>`
 
@@ -90,7 +78,7 @@ Der Artikel konnte leider nicht gefunden werden. Das kann verschiedene Gründe h
   <li>Artikel aus der gedruckten Ausgabe sind ggf. noch nicht verfügbar.</li>
 </ul>
 &rarr; Nutzen Sie das offene Tab, um nach Stichworten zu suchen. <br />
-&rarr; Fragen Sie die Presse-Expert*innen nach dem Artikel: <a href="mailto:${mailContactArchive}?subject=Presserecherche: Artikel auf ${articleURL.hostname.replace('www.', '')}&body=Hallo, %0D%0A%0D%0A könnten Sie mir bitte den folgenden Artikel beschaffen? %0D%0A%0D%0A URL: ${articleURL} %0D%0A%0D%0A Vielen Dank.">Mail</a>. 
+&rarr; Fragen Sie die Presse-Expert*innen nach dem Artikel: <a href="mailto:${mailContactArchive}?subject=Presserecherche: Artikel auf ${articleURL.hostname.replace('www.', '')}&body=Hallo, %0D%0A%0D%0A könnten Sie mir bitte den folgenden Artikel beschaffen? %0D%0A%0D%0A URL: ${articleURL} %0D%0A%0D%0A Vielen Dank.">Mail an IDA-Infodesk</a>. 
 `
 
 // Volltextanzeige
@@ -107,6 +95,11 @@ export const ARTICLE_FULLTEXT = `
     <p class="card-header-title">
     Pressearchiv
     </p>
+    <span class="card-header-icon is-size-2">
+        <span class="icon"> 
+            <img src="${browser.extension.getURL('icons/1.svg')}" alt="1">
+        </span> 
+    </span>
   </header>
 
   <header class="card-header">
@@ -120,8 +113,6 @@ export const ARTICLE_FULLTEXT = `
     </a>
   </header>
 
-  ${CONTACT_TEST_RUN}
-  
   <div class="card-content">
     <div class="content">
       {{text}}
@@ -129,7 +120,7 @@ export const ARTICLE_FULLTEXT = `
   </div>
 
   <footer class="card-header" style="padding-bottom: 1em;">
-  <p class="card-header-title"><small>{{copyright}}</small></p>
+    <p class="card-header-title"><small>Nur für interne Zwecke! Copyright: Rechteinhaber</small></p>
   </footer>
 
  <footer class="card-header">
