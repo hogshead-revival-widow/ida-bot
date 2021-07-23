@@ -40,7 +40,9 @@ class TabRunner {
   }
 
   getActionCode (action) {
-    if (action.fill) {
+    if (action.resetPan){
+      return [`location.href='?sa_suchmodus=SUCHE_EINFACH&amp;sa_current_aktion=retrieveCTRL__REFRESH'`]
+    }else if (action.fill) {
       return [`document.querySelector('${action.fill.selector}').value = '${action.fill.value}'`]
     } else if (action.event) {
       return [`document.querySelector('${action.event.selector}').dispatchEvent(new Event('${action.event.event}'))`]
@@ -57,7 +59,11 @@ class TabRunner {
     } else if (action.wait) {
       return [makeTimeout(action.wait)]
     } else if (action.click) {
-      return [`document.querySelector('${action.click}').click()`]
+      if (action.optional) {
+        return [`var el = document.querySelector('${action.click}'); el && el.click()`]
+      } else {
+        return [`document.querySelector('${action.click}').click()`]
+      }
     } else if (action.extract) {
       return [`function getPDFUrl (){
         const sessionID = document.querySelector('#session_id').value;
