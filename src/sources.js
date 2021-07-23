@@ -1,5 +1,5 @@
 import { DEFAULT_URL, FALLBACK_URL, INFO_FAILED_TO_FIND_CONTENT } from './const.js'
-import { MSG_START_SEARCH, MSG_ARTICLE, MSG_WAIT, MSG_INTERACTION_SSO } from './ui.js'
+import { MSG_START_SEARCH, MSG_CLEAN_UP, MSG_ARTICLE, MSG_WAIT, MSG_INTERACTION_SSO } from './ui.js'
 
 /* Achtung, Unterschiede bei Weiterleitungen für Firefox:
 
@@ -39,8 +39,11 @@ export default {
       ],
       search: [
         [
+          { message: MSG_CLEAN_UP },
+          { resetPan: true}
+        ],
+        [
           { message: MSG_START_SEARCH },
-          { click: '#retr_buttonZuruecksetzen' },
           { fill: { selector: '#retr_std_inp_sbegr', isQuery: true } },
           { fill: { selector: '#retr_inp_quell', isSource: true } },
           { click: '#id_verknuep_phrase'},
@@ -61,7 +64,7 @@ export default {
       ]
     },
     'fallback': {
-      loggedIn: '#retr_std_inp_sbegr',
+      loggedIn: '#retr_buttonSuchen',
       start: FALLBACK_URL,
       defaultParams: {
         domain: FALLBACK_URL
@@ -74,8 +77,11 @@ export default {
       ],
       search: [
         [
+          { message: MSG_CLEAN_UP },
+          { resetPan: true}
+        ],
+        [
           { message: MSG_START_SEARCH },
-          { click: '#retr_buttonZuruecksetzen' },
           { fill: { selector: '#retr_std_inp_sbegr', isQuery: true } },
           { fill: { selector: '#retr_inp_quell', isSource: true } },
           { click: '#id_verknuep_phrase'},
