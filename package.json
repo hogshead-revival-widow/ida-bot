@@ -1,6 +1,6 @@
 {
   "name": "idabot",
-  "version": "0.0.9",
+  "version": "0.9.7",
   "description": "Einfacherer Zugriff auf das Pressearchiv",
   "devDependencies": {
     "eslint": "^7.22.0",
@@ -22,5 +22,5 @@
   },
   "author": "hogshead-revival-widow",
   "license": "GPL-3.0-or-later",
-  "homepage": "https://stefanw.github.io/voebbot/"
+  "homepage": "https://github.com/hogshead-revival-widow/ida-bot"
 }
