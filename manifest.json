@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "IDA-Bot (RFA)",
-  "version": "0.9.4",
+  "version": "0.9.7",
   "description": "Vereinfacht die Suche im Pressearchiv",
   "icons": {
     "48": "icons/voebbot48.png",
@@ -10,6 +10,7 @@
   "permissions": [
     "storage",
      "http://127.0.0.1:5000/*"
+
   ],
   "web_accessible_resources": [
     "css/*", "icons/*"
@@ -30,9 +31,7 @@
         "*://www.badische-zeitung.de/*",
         "*://www.stuttgarter-zeitung.de/*",
         "*://www.welt.de/*",
-        "*://bnn.de/*",
-        "*://zeitung.faz.net/*",
-        "*://www.cicero.de/*"
+        "*://zeitung.faz.net/*"
       ],
       "js": [
         "lib/browser-polyfill.js",
@@ -55,4 +54,3 @@
     "default_title": "IDA-Bot"
   }
 }
-
