@@ -1,6 +1,6 @@
 
 /* Auf der "Badischen Zeitung" ist im ersten
-Absatz gelegentlich (nur durch Zeilenumbruch getrennt) ein für verschiedene Artikel wiederverwendeter Text 
+Absatz (nur durch <br> getrennt) ein mehrfach wiederverwendeter Text 
 */
 function badischeZeitungignoreFirst(node){
   const textElement = node.innerText
@@ -113,24 +113,6 @@ export default {
       dbShortcut: 'Welt / Welt am *'
     }
   },
-  'bnn.de': {
-    // Bei Longreads werden andere Klassen genutzt
-    selectors: {
-      query: () => {
-        
-        return extractQuery(document.querySelector('.article__body p, .longread-content'))
-      },
-      paywall: '.article__paywall, .paywall',
-      main: '.article__body, .longread-content'
-    },
-    start: (root) => {
-      const el = root.querySelector('.article__paywall.paywall')
-      el?el.classList.remove('paywall'):true
-    },
-    sourceParams: {
-      dbShortcut: 'Badische Neues*'
-    }
-  },
   'www.faz.net': {
     selectors: {
       query: () => {
@@ -160,27 +142,5 @@ export default {
     sourceParams: {
       dbShortcut: 'Frankfurter Allgemeine*'
     }
-  },
-  'www.cicero.de': {
-    selectors: {
-      query: (root) => {
-        return extractQuery(root.querySelector('.field-name-field-cc-body'))
-      },
-      main: '.field-name-field-cc-body',
-      paywall: '#plenigo-paywall-start',
-      loader: '.paywall-fadeout'
-    },
-    start: (root) => {
-      root.querySelector('.paywall-fadeout').classList.remove('paywall-fadeout')
-      root.querySelector('.paywall-fader').classList.remove('paywall-fader')
-      const ele = root.querySelector('.author-box--newsletter')
-      if (ele) {
-        ele.remove()
-      }
-    },
-    waitOnLoad: true,
-    sourceParams: {
-      dbShortcut: 'Cicero'
-    }
-  },
+  }
 }
