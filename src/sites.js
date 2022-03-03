@@ -87,7 +87,7 @@ export default {
   'www.stuttgarter-zeitung.de': {
     selectors: {
       query: () => {
-        return extractQuery(document.querySelector('.brickgroup .mod-article p:not(.box-lead)'))
+        return extractQuery(document.querySelector('.article-body > p'))
       },
       paywall: '.c1-offers-target',
       main: ".brickgroup .mod-article p:not(.box-lead)",
