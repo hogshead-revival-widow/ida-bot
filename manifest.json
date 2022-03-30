@@ -25,6 +25,12 @@
   "content_scripts": [
     {
       "matches": [
+        "*://www.mannheimer-morgen.de/*",
+        "*://www.fnweb.de/*",
+        "*://www.swp.de/*",
+        "*://www.volksfreund.de/region/*",
+        "*://www.nzz.ch/*",
+        "*://www.bild.de/*",
         "*://www.zeit.de/*",
         "*://www.sueddeutsche.de/*",
         "*://www.faz.net/*",
