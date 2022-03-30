@@ -25,6 +25,7 @@
   "content_scripts": [
     {
       "matches": [
+        "*://bnn.de/*",
         "*://www.mannheimer-morgen.de/*",
         "*://www.fnweb.de/*",
         "*://www.swp.de/*",
