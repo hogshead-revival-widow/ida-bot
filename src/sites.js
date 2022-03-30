@@ -39,6 +39,24 @@ function zeitConditionalElement() {
 }
 
 export default {
+  'bnn.de': {
+    // Bei Longreads werden andere Klassen genutzt
+    selectors: {
+      query: () => {
+        
+        return extractQuery(document.querySelector('.article__body p, .longread-content'))
+      },
+      paywall: '.article__paywall, .paywall',
+      main: '.article__body, .longread-content'
+    },
+    start: (root) => {
+      const el = root.querySelector('.article__paywall.paywall')
+      el?el.classList.remove('paywall'):true
+    },
+    sourceParams: {
+      dbShortcut: 'Badische Neues*'
+    }
+  },
   "www.mannheimer-morgen.de": {
     selectors: {
       query: () =>
