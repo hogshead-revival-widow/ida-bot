@@ -39,6 +39,18 @@ function zeitConditionalElement() {
 }
 
 export default {
+  'www.berliner-zeitung.de': {
+    selectors: {
+      query: () => {
+        return extractQuery(document.querySelector('.o-article p'))
+      },
+      paywall: '.paywall-dialog-box',
+      main: '.o-article',
+    },
+    sourceParams: {
+      dbShortcut: 'Berliner Zeitung*'
+    }
+  },
   'bnn.de': {
     // Bei Longreads werden andere Klassen genutzt
     selectors: {
