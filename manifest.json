@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "IDA-Bot (RFA)",
-  "version": "0.9.7",
+  "version": "0.9.10",
   "description": "Vereinfacht die Suche im Pressearchiv",
   "icons": {
     "48": "icons/voebbot48.png",
@@ -25,13 +25,12 @@
   "content_scripts": [
     {
       "matches": [
-        "*://berliner-zeitung.de/*",
+        "*://www.berliner-zeitung.de/*",
         "*://bnn.de/*",
         "*://www.mannheimer-morgen.de/*",
         "*://www.fnweb.de/*",
         "*://www.swp.de/*",
-        "*://www.volksfreund.de/region/*",
-        "*://www.nzz.ch/*",
+        "*://www.volksfreund.de/*",
         "*://www.bild.de/*",
         "*://www.zeit.de/*",
         "*://www.sueddeutsche.de/*",
