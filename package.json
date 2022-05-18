@@ -1,6 +1,6 @@
 {
   "name": "idabot",
-  "version": "0.9.7",
+  "version": "0.9.10",
   "description": "Einfacherer Zugriff auf das Pressearchiv",
   "devDependencies": {
     "eslint": "^7.22.0",
