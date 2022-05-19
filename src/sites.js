@@ -35,6 +35,18 @@ function zeitConditionalElement() {
 }
 
 export default {
+    'www.stuttgarter-nachrichten.de': {
+        selectors: {
+            query: () => {
+                return extractQuery(document.querySelector('.article-body > p'));
+            },
+            paywall: '.c1-offers-target',
+            main: '.article-body > p',
+        },
+        sourceParams: {
+            dbShortcut: 'Stuttgarter Nachrichten',
+        },
+    },
     'www.berliner-zeitung.de': {
         selectors: {
             query: () => {
