@@ -25,6 +25,7 @@
   "content_scripts": [
     {
       "matches": [
+        "*://www.stuttgarter-nachrichten.de/*",
         "*://www.berliner-zeitung.de/*",
         "*://bnn.de/*",
         "*://www.mannheimer-morgen.de/*",
