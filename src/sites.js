@@ -22,6 +22,8 @@ function badischeZeitungignoreFirst(node) {
     return textElement;
 }
 
+// Bild-Headline oft sehr kurz
+const extractQueryBild = (node) => `"${(node).innerText.split(' ').slice(1, 8).join(' ')}"`;
 const extractQuery = (node) => `"${node.innerText.split(' ').slice(3, 11).join(' ')}"`;
 const extractQueryBadische = (node) =>
     `"${badischeZeitungignoreFirst(node).split(' ').slice(3, 11).join(' ')}"`;
@@ -133,7 +135,7 @@ export default {
         waitOnLoad: true,
         selectors: {
             query: () => {
-                return extractQuery(
+                return extractQueryBild(
                     document.querySelector('.headline') ||
                         document.querySelector('.article-header__headline')
                 );
