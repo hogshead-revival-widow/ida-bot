@@ -186,7 +186,7 @@ class SiteBot {
     }
     let q = articleInfo.query
     // remove some special chars
-    q = q.replace(/[!,:?;'/()]/g, '')
+    q = q.replace(/[!/&]/g, '')
     // PAN-only: replace newlines, dash with space
     q = q.replace(/[\n-]/g, ' ')
     // remove non-leading/trailing quotes 
