@@ -214,23 +214,16 @@ export default {
             dbShortcut: 'Süddeu*',
         },
     },
-    'www.stuttgarter-zeitung.de': {
+    "www.stuttgarter-zeitung.de": {
         selectors: {
             query: () => {
-                return extractQuery(document.querySelector('.article-body > p'));
+                return extractQuery(document.querySelector(".introText > p"));
             },
-            paywall: '.c1-offers-target',
-            main: '.brickgroup .mod-article p:not(.box-lead)',
-        },
-        start: (root) => {
-            const bricks = [
-                root.querySelector('.mod-header-article-overlay-wrap'),
-                root.querySelector('.statichtmlbrick'),
-            ];
-            bricks.forEach((ele, i) => (ele ? ele.remove() : true));
+            paywall: ".c1-offers-target",
+            main: ".brickgroup .mod-article p:not(.box-lead)",
         },
         sourceParams: {
-            dbShortcut: 'Stuttgarter Zeitung',
+          dbShortcut: "Stuttgarter Zeitung",
         },
     },
     'www.welt.de': {
