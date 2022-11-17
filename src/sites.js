@@ -63,12 +63,12 @@ export default {
     },
     'bnn.de': {
         selectors: {
-            query: () => {
-                return extractQuery(
-                    document.querySelector('.intro') ||
+            query: () =>
+                extractQuery(
+                    document.querySelector('.figure__caption-text') ||
+                        document.querySelector('.intro') ||
                         document.querySelector('.immersive-header__intro')
-                );
-            },
+                ),
             paywall: '.article__paywall, .paywall',
             main: '.article__body, .longread-content',
         },
