@@ -1,0 +1,8 @@
+.DS_STORE
+node_modules/
+build/
+bundle/
+src/settings/config.json
+src/settings/sites.ts
+src/settings/strings.ts
+src/settings/source.ts

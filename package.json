@@ -1,26 +1,18 @@
 {
-  "name": "idabot",
-  "version": "0.9.10",
-  "description": "Einfacherer Zugriff auf das Pressearchiv",
-  "devDependencies": {
-    "eslint": "^7.22.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "rollup": "^2.50.4"
-  },
-  "scripts": {
-    "start": "rollup -c -w",
-    "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "version": "gsed -i '4s/\"version\": \".*\",/\"version\": \"'\"$(jq -r .version package.json)\"'\",/' manifest.json && git add manifest.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hogshead-revival-widow/ida-bot.git"
-  },
-  "author": "hogshead-revival-widow",
-  "license": "GPL-3.0-or-later",
-  "homepage": "https://github.com/hogshead-revival-widow/ida-bot"
+    "scripts": {
+        "bundle": "./bundle.sh",
+        "build": "rm -rf build && LOGGING=on  rollup -c",
+        "dev": "LOGGING=on  rollup -c -w"
+    },
+    "devDependencies": {
+        "@rollup/plugin-json": "^5.0.1",
+        "@rollup/plugin-replace": "^5.0.1",
+        "@rollup/plugin-typescript": "^9.0.2",
+        "@types/chrome": "^0.0.199",
+        "rollup": "^3.2.3",
+        "rollup-plugin-chrome-extension": "^3.6.10",
+        "ts-essentials": "^9.3.0",
+        "typescript": "^4.8.4"
+    },
+    "type": "module"
 }

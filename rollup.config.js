@@ -1,23 +1,22 @@
-export default [
-  {
-    input: 'src/background.js',
+import replace from '@rollup/plugin-replace';
+import { chromeExtension, simpleReloader } from 'rollup-plugin-chrome-extension';
+import json from '@rollup/plugin-json';
+import typescript from '@rollup/plugin-typescript';
+
+export default {
+    input: 'src/manifest.ts',
     output: {
-      file: 'build/background.js',
-      format: 'cjs'
-    }
-  },
-  {
-    input: 'src/content.js',
-    output: {
-      file: 'build/content.js',
-      format: 'cjs'
-    }
-  },
-  {
-    input: 'src/options.js',
-    output: {
-      file: 'build/options.js',
-      format: 'cjs'
-    }
-  }
-]
+        dir: 'build',
+        format: 'esm',
+    },
+    plugins: [
+        replace({
+            preventAssignment: true,
+            __LOGGING__: process.env.LOGGING === 'on' ? true : false,
+        }),
+        chromeExtension(),
+        simpleReloader(),
+        json(),
+        typescript(),
+    ],
+};

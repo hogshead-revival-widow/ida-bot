@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "lib": ["dom", "es2021"],
+        "module": "esnext",
+        "strict": true,
+        "target": "ES2019",
+        "typeRoots": ["node_modules/@types"],
+        "noEmitOnError": true,
+        "skipLibCheck": true,
+        "moduleResolution": "Node16",
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "config.json": ["src/settings/config.json"],
+            "ui": ["src/lib/ui/templates/index.ts"],
+            "injection": ["src/lib/injection/index.ts"]
+        }
+    },
+    "exclude": ["node_modules/*"]
+}
