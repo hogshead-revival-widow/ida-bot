@@ -34,11 +34,11 @@ Allgemeine Einstellungen können in der [Konfigurationsdatei](src/settings/confi
 
 Seiten hinzufügen wurde stark vereinfacht und ist in drei Schritten möglich. Unter _Seite/site_ wird dabei eine Website verstanden, die einen Artikel besitzt, von dem ein Query extrahiert werden soll.
 
-1. Trage deine Seite in [`src/settings/sites.ts`](examples/site.ts) ein.
+1. Trage deine Seite in [`src/settings/sites.ts`](src/settings/sites.ts) ein.
 
-    - Diese Datei existiert bei Neuinstallation nicht. [Hier](examples/site.ts) findest Du eine ausführlich kommentierte Beispielseite.
+    - Diese Datei existiert bei Neuinstallation, ist aber ggf. mit für dich irrelevanten Werten gefüllt. Prüfe sie und passe sie ggf. der [ausführlich kommentierten Beispielseite](examples/site.ts) an.
     - Ein zusätzlicher Eintrag im Manifest ist nicht mehr nötig. Die neue Seite wird _automatisch im Manifest aufgenommen_.
-    - Nützlich: [Hier unter `Site`](src/lib/globals/types.d.ts) findest Du den korrespondierenden Typen.
+    - [Hier unter `Site`](src/lib/globals/types.d.ts) findest Du den korrespondierenden Typen.
 
 2. Passe ggf. die Versionsnummer in der [`src/settings/config.json` unter `VERSION`](examples/config.jsonc) an.
 
@@ -52,16 +52,13 @@ Seiten hinzufügen wurde stark vereinfacht und ist in drei Schritten möglich. U
 
 ## Quelle anpassen/hinzufügen
 
-Das Abrufverhalten kann in der Datei [`src/settings/source.ts`](examples/source.ts) geändert werden. Unter _Quelle_ bzw _source_ wird dabei das Archiv verstanden, in dem
-auf Basis des von der _Site_ extrahierten Querys nach weiteren Informationen gefragt wird. Die Source-Datei existiert bei Neuinstallation nicht. [Hier](examples/source.ts) findest Du eine ausführlich kommentierte Beispiel-Source-Datei.
-
-Das Abrufverhalten ist vollständig in der [`src/settings/source.ts`](examples/source.ts) konfigurierbar. Weitere Informationen zu Anpassungsmöglichkeiten finden sich in der [Beispieldatei](examples/source.ts), dort sind auch die verfügbaren Aktionen sowie Umgangsweisen mit Fehlern dokumentiert.
+Das Abrufverhalten kann in der Datei [`src/settings/source.ts`](src/settings/source.ts) geändert werden. Unter _Quelle_ bzw _source_ wird dabei das Archiv verstanden, in dem
+auf Basis des von der _Site_ extrahierten Querys nach weiteren Informationen gefragt wird. Die Source-Datei existiert bei Neuinstallation, ist aber ggf. so für dich nicht verwendbar. [Dieses ausführlich kommentierte Beispiel](examples/source.ts) hilft dir ggf. bei der Anpassung.
 
 Weitere Informationen:
 
 -   [Hier unter `Source`](src/lib/globals/types.d.ts) findest Du den korrespondierenden Typen
 -   [Und hier](src/lib/injection/) alle injizierbaren Aktionen.
--   Aktionen können bei Fehlern auf Wunsch wiederholt werden; vgl. dazu ebenfalls die [Source-Beispieldatei](src/settings/sources.ts)
 
 ## Weitere Einstellungen
 
@@ -92,7 +89,7 @@ Weitere Informationen:
 
 10. Sobald der _Reader_ diese Nachricht erhält, startet er den _SourceBot_ und übergibt ihm die für die Suche relevanten Informationen aus der `MessageInit`-Nachricht.
 
-11. Der [_SourceBot_](src/lib/sourcebot.ts) öffnet nun das Archiv in einem neuen Browser-Tab. Die URL dazu wird auf Basis der in der Konfiguration [`src/settings/config.json`](examples/config.jsonc) angebenen URL (also `config.HOST` bzw. `config.FALLBACK_HOST`) und der `SEARCH_PARAMS` generiert. Es startet den [_Injector_](src/lib/utils/injector.ts). Der _SourceBot_ lauscht auf Veränderungen im Tab; von sich aus tut der Injector zunächst nichts.
+11. Der [_SourceBot_](src/lib/sourcebot.ts) öffnet nun das Archiv in einem neuen Browser-Tab. Die URL dazu wird auf Basis der in der Konfiguration [`src/settings/config.json`](examples/config.jsonc) angebenen URL (also `config.HOST` bzw. `config.FALLBACK_HOST`) und der `SEARCH_PARAMS` generiert. Es startet den [_Injector_](src/lib/injection/injector.ts). Der _SourceBot_ lauscht auf Veränderungen im Tab; von sich aus tut der Injector zunächst nichts.
 
 12. Sobald der Tab vollständig geladen ist, ruft _SourceBot_ den erste Schritt auf. Ein Schritt ist alles, was [unterhalb der LOGIN bzw. SEARCH-Phase für diese Quelle angegeben in `src/settings/source.ts`](examples/source.ts) ist. Der nächste Schritt wird ausgelöst, wenn sich der Tab verändert.
 
