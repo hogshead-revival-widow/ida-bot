@@ -1,4 +1,4 @@
-import Injector from 'src/lib/utils/injector.js';
+import Injector from 'src/lib/injection/injector.js';
 import logger from 'src/lib/utils/logger.js';
 import {
     assertNonNullish,
