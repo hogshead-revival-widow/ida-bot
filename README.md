@@ -16,7 +16,13 @@ Einen Überblick über den Programmablauf findest Du [hier](#programmablauf-sche
     - Du kannst sie zum Testen mit Chrome als entpackte Erweiterung unter `chrome://extensions` laden. [Dazu musst Du ggf. vorab den Chrome-Developer-Modus aktivieren (Schieberegler betätigen)](https://support.google.com/chrome/a/answer/2714278?hl=en).
     - Der Reloader ist recht simpel; prüfe bei Problemen, ob er hängen geblieben ist, indem Du dir die Ausgabe von `npm run dev`ansiehst. Bleibt er hängen, musst Du ihn händisch abbrechen (`STRG-C`) und wieder neu mit `npm run dev` starten.
 
-Willst Du später deine fertige Version verteilen, solltest Du sie mit `npm run bundle` (ruft `bundle.sh` auf) bauen. Dort ist sowohl das Logging deaktiviert als auch der Reloader. Die Releaseversion findest Du in `bundle/`; die dortige `bot.zip` kann schließlich in den Chrome Web Store hochgeladen werden.
+Willst Du später deine fertige Version verteilen, solltest Du sie mit `npm run bundle` (ruft `bundle.sh` auf) bauen. Dort ist sowohl das Logging deaktiviert als auch der Reloader. Die Releaseversion findest Du in `bundle/`; die dortige `bot.zip` kann schließlich in den Chrome Web Store hochgeladen werden. Denk dran, ggf. die Versionsnummer anzupassen
+in [`src/settings/config.json` unter `VERSION`](examples/config.jsonc). Die Konfigurationsdatei existiert bei Neuinstallation nicht. [Hier](examples/config.jsonc) findest Du eine ausführlich kommentierte Beispiel-Konfiguration.
+
+3. Bau die Produktivversion mit `npm run bundle`.
+
+    - In `bundle/` findest Du nun die gebaute, entpackte Produktivversion der Erweiterung selbst (zum ggf. Testen vor Release)
+    - Zusätzlich findest Du ebenfalls in `bundle/` eine ZIP-Datei zum Verteilen (kann so direkt z. B. in den Chrome Web Store hochgeladen werden)
 
 ## Logging
 
@@ -28,27 +34,15 @@ Willst Du später deine fertige Version verteilen, solltest Du sie mit `npm run 
 
 ## Allgemeine Einstellungen
 
-Allgemeine Einstellungen können in der [Konfigurationsdatei](src/settings/config.json) vorgenommen werden. Aus dieser wird auch das Manifest generiert, daher ist eine Manipulation der Manifest-Dateien in aller Regel nicht nötig.
+Allgemeine Einstellungen können in der [Konfigurationsdatei](src/settings/config.json) vorgenommen werden. Die Konfigurationsdatei existiert bei Neuinstallation nicht. [Hier](examples/config.jsonc) findest Du eine ausführlich kommentierte Beispiel-Konfiguration. Aus dieser wird auch das Manifest generiert, daher ist eine Manipulation der Manifests in aller Regel nicht nötig.
 
 ## Seite anpassen/hinzufügen
 
-Seiten hinzufügen wurde stark vereinfacht und ist in drei Schritten möglich. Unter _Seite/site_ wird dabei eine Website verstanden, die einen Artikel besitzt, von dem ein Query extrahiert werden soll.
+Seiten hinzufügen wurde stark vereinfacht. Unter _Seite/site_ wird dabei eine Website verstanden, die einen Artikel besitzt, von dem ein Query extrahiert werden soll. Trage dazu deine Seite in [`src/settings/sites.ts`](src/settings/sites.ts) ein.
 
-1. Trage deine Seite in [`src/settings/sites.ts`](src/settings/sites.ts) ein.
-
-    - Diese Datei existiert bei Neuinstallation, ist aber ggf. mit für dich irrelevanten Werten gefüllt. Prüfe sie und passe sie ggf. der [ausführlich kommentierten Beispielseite](examples/site.ts) an.
-    - Ein zusätzlicher Eintrag im Manifest ist nicht mehr nötig. Die neue Seite wird _automatisch im Manifest aufgenommen_.
-    - [Hier unter `Site`](src/lib/globals/types.d.ts) findest Du den korrespondierenden Typen.
-
-2. Passe ggf. die Versionsnummer in der [`src/settings/config.json` unter `VERSION`](examples/config.jsonc) an.
-
-    - Die Konfigurationsdatei existiert bei Neuinstallation nicht. [Hier](examples/config.jsonc) findest Du eine ausführlich kommentierte Beispiel-Konfiguration.
-    - Diese wird ebenfalls automatisch ins Manifest übernommen.
-
-3. Bau die Produktivversion mit `npm run bundle`.
-
-    - In `bundle/` findest Du nun die gebaute, entpackte Produktivversion der Erweiterung selbst (zum ggf. Testen vor Release)
-    - Zusätzlich findest Du ebenfalls in `bundle/` eine ZIP-Datei zum Verteilen (kann so direkt z. B. in den Chrome Web Store hochgeladen werden)
+-   Diese Datei existiert bei Neuinstallation, ist aber ggf. mit für dich irrelevanten Werten gefüllt. Prüfe sie und passe sie ggf. entsprechend der [ausführlich kommentierten Beispielseite](examples/site.ts) an.
+-   Ein zusätzlicher Eintrag im Manifest ist nicht mehr nötig. Die neue Seite wird _automatisch im Manifest aufgenommen_.
+-   [Hier unter `Site`](src/lib/globals/types.d.ts) findest Du den korrespondierenden Typen.
 
 ## Quelle anpassen/hinzufügen
 
