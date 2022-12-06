@@ -42,7 +42,6 @@ const example: Site = {
         query: ['.text'],
         // PAYWALL: CSS-Selektoren, unter denen die Paywall gefunden werden kann
         paywall: ['.here_is_the_paywall'],
-        // MAIN: Array of CSS selectors (of the website `example.com`) designating
         // MAIL: CSS-Selektoren, die angeben, wo der Bot andocken soll
         main: ['.attach_bot_here'],
     },
