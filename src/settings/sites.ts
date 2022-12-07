@@ -67,8 +67,8 @@ const sites: Site[] = [
         waitOnLoad: true,
         selectors: {
             query: [
-                '.article-body > div > p:nth-child(2)',
                 '.article-body > div > p:nth-child(1)',
+                '.article-body > div > p:nth-child(2)',
                 '.headline',
                 '.article-header__headline',
             ],
