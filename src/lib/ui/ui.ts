@@ -58,7 +58,7 @@ class UI {
 
     informNotReachable() {
         this._hide(ID.PROGRESS_BAR);
-        this.inform(this._strings.INFO_BOX.NOT_REACHABLE);
+        this.inform(this._strings.INFO_BOX.NOT_REACHABLE, 'innerHTML');
         this._display(ID.REFRESH_BUTTON);
     }
 
