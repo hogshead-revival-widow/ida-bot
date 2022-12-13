@@ -229,6 +229,9 @@ const sites: Site[] = [
             'Trierischer Volksfreund / Zeitung für Trier und das Trierer Land',
             'Trierischer Volksfreund / Bitburg-Prüm',
             'Trierischer Volksfreund / Vulkaneifel',
+            'Trierischer Volksfreund / Zeitung für Trier und das Trierer Land (TV)',
+            'Trierischer Volksfreund / Bitburg-Prüm (TVBP)',
+            'Trierischer Volksfreund / Vulkaneifel (TVV)',
         ],
     },
 
