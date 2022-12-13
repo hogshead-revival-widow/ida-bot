@@ -101,9 +101,46 @@ const sites: Site[] = [
             'Welt am Sonntag / Bayern',
         ],
     },
+
     /*
         Regional
     */
+
+    {
+        match: '*://www.rhein-zeitung.de/*',
+        selectors: {
+            query: ['.articlebody__teasertext'],
+            paywall: ['.mrvpaywall__layer'],
+            main: ['.articlebody__mainarticle'],
+        },
+
+        sourceNames: [
+            'Rhein-Zeitung',
+            'Rhein-Zeitung / Koblenz',
+            'Rhein-Zeitung / Kreis Neuwied',
+            'Rhein-Zeitung / Koblenz (RZG)',
+            'Rhein-Zeitung / Bad Kreuznach (Ost)',
+            'Rhein-Zeitung / Kreis Altenkirchen Betzdorf',
+            'Rhein-Zeitung / Bad Kreuznach (Ost) (RZBKO)',
+            'Rhein-Zeitung / Kreis Birkenfeld',
+            'Rhein-Zeitung / Rhein-Hunsrück Kreis',
+            'Rhein-Zeitung / Andernach Mayen',
+            'Rhein-Zeitung / Kreis Neuwied (RZLNW)',
+            'Rhein-Zeitung / Bad Neuenahr-Ahrweiler',
+            'Rhein-Zeitung / Kreis Altenkirchen Betzdorf (RZAKB)',
+            'Rhein-Zeitung / Kreis Cochem-Zell',
+            'Rhein-Zeitung / Kreis Birkenfeld (RZKB)',
+            'Rhein-Zeitung / Rhein-Hunsrück Kreis (RZRH)',
+            'Rhein-Zeitung / Bad Neuenahr-Ahrweiler (RZBNA)',
+            'Rhein-Zeitung / Andernach Mayen (RZANM)',
+            'Rhein-Zeitung / Rhein-Lahn Kreis (West)',
+            'Rhein-Zeitung / Rhein-Lahn Kreis (Ost)',
+            'Rhein-Zeitung / Kreis Cochem-Zell (RZCOC)',
+            'Rhein-Zeitung / Rhein-Lahn Kreis (Ost) (RZRLO)',
+            'Rhein-Zeitung / Rhein-Lahn Kreis (West) (RZRLW)',
+            'Rhein-Zeitung / Bad Kreuznach (West)',
+        ],
+    },
 
     {
         match: '*://www.stuttgarter-nachrichten.de/*',
