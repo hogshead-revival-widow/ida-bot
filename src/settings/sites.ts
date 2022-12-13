@@ -42,6 +42,15 @@ const sites: Site[] = [
         },
         sourceNames: ['Die Zeit', 'Die Zeit magazin', 'Christ & Welt'],
     },
+    {
+        match: '*://www.brandeins.de/*',
+        selectors: {
+            query: ['.title-text'],
+            paywall: ['[id^=paywall]'],
+            main: ['.textblock.container > div > div', '.article-author'],
+        },
+        sourceNames: ['brand eins'],
+    },
 
     {
         match: '*://www.faz.net/*',
