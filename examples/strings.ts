@@ -119,7 +119,7 @@ const STRINGS = {
                             Wenn Sie mögen, informieren wir Sie vorab über größere
                             Updates. Melden Sie sich dafür
                             <a
-                                href="mailto:${config.CONTACT_ARCHIVE}?subject=[Abo] Mailing-Liste bei Updates&body=Bitte auf die Mail-Liste eintragen."
+                                href="mailto:${config.CONTACT_SUPPORT}?subject=[Abo] Mailing-Liste bei Updates&body=Bitte auf die Mail-Liste eintragen."
                                 >hier</a
                             >.
                         </p>
