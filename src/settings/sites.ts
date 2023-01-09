@@ -104,6 +104,8 @@ const sites: Site[] = [
         },
         sourceNames: [
             'Die Welt',
+            'Welt am Sonntag (WamS)',
+            'Welt online',
             'Welt am Sonntag',
             'Welt am Sonntag / Hamburg',
             'Welt am Sonntag / NRW',
