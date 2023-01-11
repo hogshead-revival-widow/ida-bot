@@ -7,7 +7,7 @@ class Result {
     private readonly _pdfUrlTemplate;
     private readonly _itemURLTemplate;
     private readonly metadataShape = {
-        exactKeys: [
+        neededKeys: [
             'name',
             'category',
             'providerId',
@@ -114,8 +114,7 @@ class Result {
     private _isOfMetadataShape(obj: any): obj is ResultMetadata {
         return (
             typeof obj === 'object' &&
-            this.metadataShape.exactKeys.length === Object.keys(obj).length &&
-            this.metadataShape.exactKeys.every(
+            this.metadataShape.neededKeys.every(
                 (key) =>
                     key in obj && typeof obj[key] === this.metadataShape.typeOfValue
             )
