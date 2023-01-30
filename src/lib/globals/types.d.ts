@@ -6,7 +6,7 @@ declare global {
 
     interface BotMetadata {
         source: Source;
-        query: string;
+        query: string[];
         site: Site;
     }
 
@@ -74,7 +74,7 @@ declare global {
                 | ((
                       root: Document,
                       replaceInQuery: Source['replaceInQuery']
-                  ) => string);
+                  ) => string[]);
             paywall: Selector[];
             main: Selector[];
         };

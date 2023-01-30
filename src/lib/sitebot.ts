@@ -54,20 +54,29 @@ class SiteBot {
     }
 
     getQuery(
-        from = 2,
-        to = 7,
-        replaceInQuery = this._source.replaceInQuery,
-        minLen = 8
+        ignoreStartWords = 3, // erste drei Worte ignorieren (oft Sondersatz)
+        ignoreEndWords = 1, // letztes Wort (oft abgekürzt) ignorieren
+        extractLength = 5, // die 5 ersten Worte nach `ignoreWords` und die fünf letzten nehmen
+        replaceInQuery = this._source.replaceInQuery
     ) {
-        // alle Parameter werden an `makeQuery` weiter gereicht.
         if (typeof this.site.selectors.query === 'function')
             return this.site.selectors.query(this._root, replaceInQuery);
 
         const maybeQuery = this.site.selectors.query
             .map((selector) => this._root.querySelector(selector))
-            .filter((maybeElement) => maybeElement !== null)
+            .filter(
+                (maybeElement) =>
+                    maybeElement !== null &&
+                    (maybeElement as HTMLElement).innerText.length > 0
+            )
             .map((element) =>
-                makeQuery(element as HTMLElement, from, to, replaceInQuery, minLen)
+                makeQuery(
+                    element as HTMLElement,
+                    ignoreStartWords,
+                    ignoreEndWords,
+                    extractLength,
+                    replaceInQuery
+                )
             )
             .find((maybeQuery) => maybeQuery !== undefined);
 

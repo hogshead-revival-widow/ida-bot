@@ -13,7 +13,7 @@ class SourceBot implements BotMetadata {
     private _step: number = 0;
     private _phase: Phase = Phase.LOGIN;
     readonly source: Source;
-    readonly query: string;
+    readonly query: string[];
     readonly site: Site;
     private readonly _callback: Function;
     private tabId?: number;
@@ -22,7 +22,7 @@ class SourceBot implements BotMetadata {
 
     constructor(
         source: Source,
-        query: string,
+        query: string[],
         site: Site,
         siteTabId: number,
         callback: Function
@@ -58,7 +58,8 @@ class SourceBot implements BotMetadata {
     private _getRetrievalURL() {
         const baseURL = new URL(this.source.baseURL + this.source.paths.search);
 
-        baseURL.searchParams.append('query', `"${this.query}"`);
+        const query = this.query.map((q) => `"${q}"`).join(' ');
+        baseURL.searchParams.append('query', query);
 
         // Standardweite für die Suche setzen
         Object.entries(this.source.searchParams).forEach(([key, value]) =>

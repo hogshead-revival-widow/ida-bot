@@ -51,29 +51,35 @@ export const isReachable = async (url: string) => {
 
 export const makeQuery = (
     element: HTMLElement,
-    from = 2,
-    to = 7,
-    replace: Source['replaceInQuery'] = [], // ["regexPattern":  "WertDerDafürGesetztWerdenSoll", ...}
-    minLen = 8 // Minimallänge der Query-Zeichenkette (sonst gibt's einen Fehler). Wird nach der Ersetzung gemessen.
+    ignoreStartWords: number,
+    ignoreEndWords: number,
+    extractLength: number,
+    replace: Source['replaceInQuery'] // ["regexPattern":  "WertDerDafürGesetztWerdenSoll", ...}
 ) => {
-    assertNonNullish(element);
-    const maybeQuery = extractQuery(element.innerText, from, to);
-    let preparedQuery = maybeQuery;
+    const cleanedText = cleanText(element.innerText, replace);
+    const words = toWords(cleanedText);
+    if (queryIsToShort(words, ignoreStartWords + ignoreEndWords))
+        return [words.join(' ')];
+    const preparedWords = words.slice(ignoreStartWords, words.length - ignoreEndWords);
+    if (queryIsToShort(preparedWords, extractLength * 2))
+        return [preparedWords.join(' ')];
+    return [
+        preparedWords.slice(0, extractLength).join(' '),
+        preparedWords.slice(-extractLength - 1).join(' '),
+    ];
+};
+
+const queryIsToShort = (words: string[], minLen: number) =>
+    words.length <= minLen || words.join(' ').replace(/\s/g, '').length <= minLen;
+const cleanText = (text: string, replace: Source['replaceInQuery']) => {
     replace.forEach(
         (rule) =>
-            (preparedQuery = preparedQuery.replace(
+            (text = text.replace(
                 new RegExp(rule.pattern, rule.flags),
                 rule.replaceWith
             ))
     );
-    const cantUseQuery =
-        preparedQuery.length <= minLen || preparedQuery.replace(/\s/g, '').length === 0;
-    if (cantUseQuery) return undefined;
-    return preparedQuery;
+    return text;
 };
-
-export const extractQuery = (text: string, from: number, to: number) => {
-    const words = text.split(' ');
-    if (words.length <= to) return text;
-    return words.slice(from, to).join(' ');
-};
+const toWords = (text: string) =>
+    text.split(' ').filter((maybeWord) => maybeWord.length > 0);
