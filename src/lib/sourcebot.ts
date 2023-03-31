@@ -58,7 +58,8 @@ class SourceBot implements BotMetadata {
     private _getRetrievalURL() {
         const baseURL = new URL(this.source.baseURL + this.source.paths.search);
 
-        const query = this.query.map((q) => `"${q}"`).join(' ');
+        //const query = this.query.map((q) => `"${q}"`).join(' ');
+        const query = this.query.join(' ');
         baseURL.searchParams.append('query', query);
 
         // Standardweite für die Suche setzen

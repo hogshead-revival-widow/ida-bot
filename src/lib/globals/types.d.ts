@@ -60,6 +60,7 @@ declare global {
             item: string;
         };
         replaceInQuery: Array<{ pattern: string; flags: string; replaceWith: string }>;
+        removeFromQuery: Array<string>;
         searchParams: Record<string, string>;
     };
 

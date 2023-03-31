@@ -57,7 +57,8 @@ class SiteBot {
         ignoreStartWords = 3, // erste drei Worte ignorieren (oft Sondersatz)
         ignoreEndWords = 1, // letztes Wort (oft abgekürzt) ignorieren
         extractLength = 5, // die 5 ersten Worte nach `ignoreWords` und die fünf letzten nehmen
-        replaceInQuery = this._source.replaceInQuery
+        replaceInQuery = this._source.replaceInQuery,
+        removeFromQuery = this._source.removeFromQuery
     ) {
         if (typeof this.site.selectors.query === 'function')
             return this.site.selectors.query(this._root, replaceInQuery);
@@ -75,7 +76,8 @@ class SiteBot {
                     ignoreStartWords,
                     ignoreEndWords,
                     extractLength,
-                    replaceInQuery
+                    replaceInQuery,
+                    removeFromQuery
                 )
             )
             .find((maybeQuery) => maybeQuery !== undefined);

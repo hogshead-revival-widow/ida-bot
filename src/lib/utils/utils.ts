@@ -54,23 +54,43 @@ export const makeQuery = (
     ignoreStartWords: number,
     ignoreEndWords: number,
     extractLength: number,
-    replace: Source['replaceInQuery'] // ["regexPattern":  "WertDerDafürGesetztWerdenSoll", ...}
+    replace: Source['replaceInQuery'], // ["regexPattern":  "WertDerDafürGesetztWerdenSoll", ...}
+    remove: Source['removeFromQuery']
 ) => {
     const cleanedText = cleanText(element.innerText, replace);
-    const words = toWords(cleanedText);
-    if (queryIsToShort(words, ignoreStartWords + ignoreEndWords))
-        return [words.join(' ')];
-    const preparedWords = words.slice(ignoreStartWords, words.length - ignoreEndWords);
-    if (queryIsToShort(preparedWords, extractLength * 2))
-        return [preparedWords.join(' ')];
+    const wordsMax = toWords(cleanedText);
+    const cleanedTextWithRemovedWords = removeWords(cleanedText, remove);
+    const wordsMin = toWords(cleanedTextWithRemovedWords);
+
+    if (queryIsToShort(wordsMax, ignoreStartWords + ignoreEndWords))
+        return [wordsMax.join(' ')];
+    if (queryIsToShort(wordsMin, ignoreStartWords + ignoreEndWords))
+        return [wordsMin.join(' ')];
+
+    const preparedWordsMax = wordsMax.slice(
+        ignoreStartWords,
+        wordsMax.length - ignoreEndWords
+    );
+    const preparedWordsMin = wordsMin.slice(
+        ignoreStartWords,
+        wordsMin.length - ignoreEndWords
+    );
+
+    if (queryIsToShort(preparedWordsMax, extractLength * 2))
+        return [preparedWordsMax.join(' ')];
+
+    if (queryIsToShort(preparedWordsMin, extractLength * 2))
+        return [preparedWordsMin.join(' ')];
+
     return [
-        preparedWords.slice(0, extractLength).join(' '),
-        preparedWords.slice(-extractLength - 1).join(' '),
+        preparedWordsMin.slice(0, extractLength).join(' '),
+        preparedWordsMin.slice(-extractLength - 1).join(' '),
     ];
 };
 
 const queryIsToShort = (words: string[], minLen: number) =>
     words.length <= minLen || words.join(' ').replace(/\s/g, '').length <= minLen;
+
 const cleanText = (text: string, replace: Source['replaceInQuery']) => {
     replace.forEach(
         (rule) =>
@@ -79,6 +99,13 @@ const cleanText = (text: string, replace: Source['replaceInQuery']) => {
                 rule.replaceWith
             ))
     );
+    return text;
+};
+
+const removeWords = (text: string, remove: Source['removeFromQuery']) => {
+    remove.forEach((word) => {
+        text = text.replace(` ${word} `, ' ');
+    });
     return text;
 };
 const toWords = (text: string) =>

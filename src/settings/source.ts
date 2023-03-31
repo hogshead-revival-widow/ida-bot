@@ -11,6 +11,7 @@ const source: Source = {
     },
     searchParams: config.SEARCH_PARAMS,
     replaceInQuery: config.REPLACE_IN_QUERY,
+    removeFromQuery: config.REMOVE_FROM_QUERY,
     isLoggedIn: '.facet-header',
     LOGIN: [
         [

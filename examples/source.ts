@@ -32,8 +32,9 @@ const source: Source = {
     },
     // SEARCHPARAMS: Vgl. dazu das entsprechende Property in `./config.jsonc`
     searchParams: config.SEARCH_PARAMS,
-    // REPLACEINQUERY: Vgl. dazu das entsprechende Property in `./config.jsonc`
+    // REPLACEINQUERY & removeFromQuery: Vgl. dazu das entsprechende Property in `./config.jsonc`
     replaceInQuery: config.REPLACE_IN_QUERY,
+    removeFromQuery: config.REMOVE_FROM_QUERY,
     // LOGIN: Sammlung (Array I) von Schritten (Array II) von Aktionen.
     // Aktionen sind entweder Statusmeldungen (diese werden der Nutzer:in direkt angezeigt)
     // oder Injektionen; die Injektionen finden sich jeweils in den gleichnamigen

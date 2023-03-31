@@ -39,6 +39,7 @@ const sites: Site[] = [
                 ?.classList.remove('paragraph--faded'),
         selectors: {
             query: [
+                //'.figure__text',
                 '.article__item > .paragraph:nth-child(3)',
                 '.article__item > .paragraph:nth-child(2)',
                 '.article__item > .paragraph',
@@ -47,10 +48,15 @@ const sites: Site[] = [
             main: ['.article-page .article__item'],
         },
         sourceNames: [
+            'Die Zeit',
+            'Die Zeit (magazin)',
             'Die Zeit (Zeit)',
             'Zeit Hamburg',
             'ZEIT ONLINE',
             'Christ & Welt',
+            'ZEIT Geschichte',
+            'ZEIT Literatur',
+            'ZEIT Verbrechen',
         ],
     },
     {
