@@ -33,6 +33,7 @@ const sites: Site[] = [
 
     {
         match: '*://www.zeit.de/*',
+        waitOnLoad: true,
         prepareSite: (root) =>
             root
                 .querySelector('.paragraph--faded')
@@ -44,7 +45,7 @@ const sites: Site[] = [
                 '.article__item > .paragraph:nth-child(2)',
                 '.article__item > .paragraph',
             ],
-            paywall: ['.gate.article__item'],
+            paywall: ['.gate', '.gate.article__item'],
             main: ['.article-page .article__item'],
         },
         sourceNames: [
