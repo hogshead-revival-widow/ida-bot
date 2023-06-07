@@ -308,9 +308,12 @@ const sites: Site[] = [
     {
         match: '*://www.fnweb.de/*',
         selectors: {
-            query: ['.article-body-default__content'],
-            paywall: ['.paywall.paywall--delimiter'],
-            main: ['.article-body-default__content'],
+            query: [
+                '.picture__figcaption__caption',
+                '.article-header-default__description',
+            ],
+            paywall: ['#paywall-info'],
+            main: ['#paywall'],
         },
         sourceNames: ['Fränkische Nachrichten'],
     },
