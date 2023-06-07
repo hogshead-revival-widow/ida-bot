@@ -322,14 +322,9 @@ const sites: Site[] = [
         match: '*://www.volksfreund.de/*',
         waitOnLoad: true,
         selectors: {
-            query: ['.park-article__body > p > strong'],
-            paywall: ['.park-widget'],
-            main: ['.park-article'],
-        },
-        prepareSite: (root) => {
-            root.querySelector('.park-article--reduced')?.classList.remove(
-                'park-article--reduced'
-            );
+            query: ['[data-cy^="article"] > p', '.park-article__body > p > strong'],
+            paywall: ['.park-paywall-content', '.park-widget'],
+            main: ['[data-cy^="article"] > p', '.park-article'],
         },
         sourceNames: [
             'Trierischer Volksfreund / Zeitung für Trier und das Trierer Land',
