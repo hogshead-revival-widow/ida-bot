@@ -116,7 +116,6 @@ const queryIsToShort = (words: string[], minLen: number) =>
 
 const cleanText = (text: string, replace: Source['replaceInQuery']) => {
     replace.forEach((rule) => {
-        console.log(rule);
         text = text.replace(new RegExp(rule.pattern, rule.flags), rule.replaceWith);
     });
     return text;
