@@ -2,6 +2,15 @@
     Vgl. `examples/sites.ts` for eine Beispiel-Seite.
 */
 
+const szSourceNames: Site['sourceNames'] = [
+    'Süddeutsche Zeitung (SZ)',
+    'Süddeutsche Zeitung',
+    'Süddeutsche online',
+    'Süddeutsche Zeitung Magazin (SZ Magazin)',
+    'Süddeutsche Zeitung Beilage',
+    'Süddeutsche Zeitung Magazin',
+];
+
 const sites: Site[] = [
     /*
         Überregional
@@ -13,7 +22,13 @@ const sites: Site[] = [
             query: [
                 '.sz-article-body__paragraph--reduced',
                 '.sz-article-body__paragraph',
-                'div:has(.publishdate-container) > p', // super scroller (projekte/)
+                'div:has(.publishdate-container) > p',
+            ],
+            date: [
+                (root) =>
+                    root
+                        .querySelector('[id ^="article"] time')
+                        ?.getAttribute('datetime'),
             ],
             paywall: [
                 'offer-page:not([contentproduct^="projekte"])',
@@ -21,15 +36,24 @@ const sites: Site[] = [
             ],
             main: ["div[itemprop='articleBody']", '.offer-page-wrapper'],
         },
-        sourceNames: [
-            'Süddeutsche Zeitung (SZ)',
-            'Süddeutsche Zeitung',
-            'Süddeutsche online',
-            'Süddeutsche Zeitung Magazin (SZ Magazin)',
-            'Süddeutsche Zeitung Beilage',
-            'Süddeutsche Zeitung Magazin',
-        ],
+        sourceNames: szSourceNames,
     },
+
+    /*
+        #todo: veröffentlichen, wenn noch weitere quellen dazu gekommen sind (reaktivierungsbedarf)
+        {
+            match: '*://sz-magazin.sueddeutsche.de/*',
+            prepareSite: (root) =>
+                root.querySelector('.paragraph')?.classList.remove('paragraph--reduced'),
+            selectors: {
+                query: ['.articlemain__content'],
+                paywall: ["div[class^='offerpage']"],
+                main: ['.articlemain__content'],
+            },
+            sourceNames: szSourceNames,
+        },
+
+    */
 
     {
         match: '*://www.zeit.de/*',
@@ -44,6 +68,9 @@ const sites: Site[] = [
                 '.article__item > .paragraph:nth-child(3)',
                 '.article__item > .paragraph:nth-child(2)',
                 '.article__item > .paragraph',
+            ],
+            date: [
+                (root) => root.querySelector('article time')?.getAttribute('datetime'),
             ],
             paywall: ['.gate', '.gate.article__item'],
             main: ['.article-page .article__item'],
@@ -76,6 +103,10 @@ const sites: Site[] = [
             query: ['.atc-Text p'],
             paywall: ['.js-atc-ContainerPaywall'],
             main: ['.atc-Text'],
+            date: [
+                (root) =>
+                    root.querySelector('[class^="atc"] time')?.getAttribute('datetime'),
+            ],
         },
         prepareSite: (root) =>
             root
@@ -102,6 +133,10 @@ const sites: Site[] = [
                 '.headline',
                 '.article-header__headline',
             ],
+            date: [
+                (root) =>
+                    root.querySelector('.main-content time')?.getAttribute('datetime'),
+            ],
             paywall: ['.conversion', '.offer-module__ps', '.offer-module__red'],
             main: ['.conversion-page', '.offer-module'],
         },
@@ -126,6 +161,10 @@ const sites: Site[] = [
             query: ['.c-article-text', '.c-summary__intro'],
             paywall: ['.contains_walled_content'],
             main: ['.c-content-container'],
+            date: [
+                (root) =>
+                    root.querySelector('.c-publish-date')?.getAttribute('datetime'),
+            ],
         },
         sourceNames: [
             'Welt am Sonntag Samstagsausgabe',
@@ -197,9 +236,15 @@ const sites: Site[] = [
         match: '*://www.stuttgarter-zeitung.de/*',
         waitOnLoad: true,
         selectors: {
-            query: ['.introText > p'],
-            paywall: ['.paywall-container-wrap'],
-            main: ['.sharewrapper'],
+            query: ['.article-body > p'],
+            paywall: ['.mod-paywall', '.c1-offers-target'],
+            main: ['.article-body > p'],
+            date: [
+                (root) =>
+                    root
+                        .querySelector('span[itemprop="datePublished"]')
+                        ?.getAttribute('content'),
+            ],
         },
         sourceNames: ['Stuttgarter Zeitung', 'Stuttgarter Nachrichten'],
     },

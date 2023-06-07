@@ -2,6 +2,8 @@ import { PORT_NAME } from 'src/lib/globals/consts.js';
 import logger from 'src/lib/utils/logger.js';
 import Result from 'src/lib/utils/result.js';
 import {
+    makeTimeInDaysRange,
+    stringToDate,
     assertNonNullish,
     makeQuery,
     isReachable,
@@ -53,6 +55,16 @@ class SiteBot {
         this._getUI().informNotReachable();
     }
 
+    // todo: einbinden + sz ausprobieren + beim querybauen berücksichtigen
+    getDateRange(
+        toleranceDays = 14 // Tage plus/minus Artikeldatum suchen
+    ) {
+        if (this.site.selectors.date === undefined) return undefined;
+        const date = this.site.selectors.date
+            .map((getDateFn) => stringToDate(getDateFn(this._root)))
+            .find((maybeDate) => maybeDate !== undefined);
+        return date === undefined ? date : makeTimeInDaysRange(date, toleranceDays);
+    }
     getQuery(
         ignoreStartWords = 3, // erste drei Worte ignorieren (oft Sondersatz)
         ignoreEndWords = 1, // letztes Wort (oft abgekürzt) ignorieren
@@ -89,12 +101,15 @@ class SiteBot {
     startRetrieval() {
         try {
             const query = this.getQuery();
+            const dateRange = this.getDateRange();
+
             this._connectPort();
             this._postMessage({
                 type: MessageType.START,
                 site: this.site,
                 source: this._source,
                 query,
+                dateRange,
             });
         } catch (error) {
             const reason: MessageFail = {

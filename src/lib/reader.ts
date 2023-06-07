@@ -45,6 +45,7 @@ class Reader {
         this._sourceBot = new SourceBot(
             message.source,
             message.query,
+            message.dateRange,
             message.site,
             this._senderTabId,
             this.botCallback

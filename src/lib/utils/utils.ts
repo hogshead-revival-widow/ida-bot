@@ -1,5 +1,28 @@
 import injection from 'injection';
 
+export const makeTimeInDaysRange: (date: Date, toleranceDays: number) => DateRange = (
+    date,
+    toleranceDays
+) => {
+    if (toleranceDays === 0) return [asTimeInDays(date), asTimeInDays(date)];
+    const fromDate = new Date(date);
+    fromDate.setDate(fromDate.getDate() - toleranceDays);
+    const toDate = new Date(date);
+    toDate.setDate(toDate.getDate() + toleranceDays);
+    return [asTimeInDays(fromDate), asTimeInDays(toDate)];
+};
+
+const asTimeInDays = (date: Date) => (date.getTime() / 86400000 + 719164).toFixed(0);
+
+// Prüft ob Datum ein valides Datum ist oder "Invalid Date"
+export const isValidDateObj = (maybeDate: Date) =>
+    maybeDate instanceof Date && !isNaN(maybeDate?.getTime());
+
+export const stringToDate = (maybeDateString: string | undefined | null) => {
+    if (!maybeDateString) return undefined;
+    const maybeDate = new Date(maybeDateString);
+    return isValidDateObj(maybeDate) ? new Date(maybeDate.toDateString()) : undefined;
+};
 export const isURL = (maybeURL: string) => {
     try {
         new URL(maybeURL);
@@ -92,13 +115,10 @@ const queryIsToShort = (words: string[], minLen: number) =>
     words.length <= minLen || words.join(' ').replace(/\s/g, '').length <= minLen;
 
 const cleanText = (text: string, replace: Source['replaceInQuery']) => {
-    replace.forEach(
-        (rule) =>
-            (text = text.replace(
-                new RegExp(rule.pattern, rule.flags),
-                rule.replaceWith
-            ))
-    );
+    replace.forEach((rule) => {
+        console.log(rule);
+        text = text.replace(new RegExp(rule.pattern, rule.flags), rule.replaceWith);
+    });
     return text;
 };
 
@@ -106,6 +126,7 @@ const removeWords = (text: string, remove: Source['removeFromQuery']) => {
     remove.forEach((word) => {
         text = text.replace(` ${word} `, ' ');
     });
+
     return text;
 };
 const toWords = (text: string) =>

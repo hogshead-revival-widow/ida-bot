@@ -2,12 +2,14 @@ import type STRINGS from 'src/settings/strings.js';
 import type { XOR } from 'ts-essentials';
 
 declare global {
+    type DateRange = [string, string];
     type Selector = string;
 
     interface BotMetadata {
         source: Source;
         query: string[];
         site: Site;
+        dateRange: DateRange | undefined;
     }
 
     /*
@@ -67,6 +69,7 @@ declare global {
     type StatusXORInjectionParams = XOR<InjectionParams, Status>;
     type Source = Record<Phase, StatusXORInjectionParams[][]> & SourceMetadata;
 
+    type GetDateStr = (root: Document) => undefined | null | string;
     type Site = {
         match: string;
         selectors: {
@@ -76,6 +79,7 @@ declare global {
                       root: Document,
                       replaceInQuery: Source['replaceInQuery']
                   ) => string[]);
+            date?: Array<GetDateStr>;
             paywall: Selector[];
             main: Selector[];
         };

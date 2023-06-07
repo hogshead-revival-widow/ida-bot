@@ -14,6 +14,7 @@ class SourceBot implements BotMetadata {
     private _phase: Phase = Phase.LOGIN;
     readonly source: Source;
     readonly query: string[];
+    readonly dateRange: DateRange | undefined;
     readonly site: Site;
     private readonly _callback: Function;
     private tabId?: number;
@@ -23,12 +24,14 @@ class SourceBot implements BotMetadata {
     constructor(
         source: Source,
         query: string[],
+        dateRange: DateRange | undefined,
         site: Site,
         siteTabId: number,
         callback: Function
     ) {
         this.source = source;
         this.query = query;
+        this.dateRange = dateRange;
         this.site = site;
         this._siteTabId = siteTabId;
         this._callback = callback;
@@ -74,6 +77,14 @@ class SourceBot implements BotMetadata {
                 `source_name_fct=${sourceName}`
             )
         );
+
+        // Wenn ein Zeitraum übergeben ist, Suche auf den Zeitraum beschränken
+        if (this.dateRange !== undefined) {
+            baseURL.searchParams.append(
+                'facetValues[]',
+                `date_fct=[${this.dateRange[0]} TO ${this.dateRange[1]}]`
+            );
+        }
         return baseURL.toString();
     }
 
