@@ -226,7 +226,13 @@ const sites: Site[] = [
         waitOnLoad: true,
         selectors: {
             query: ['.article-body > p'],
-            paywall: ['.paywall-container-wrap'],
+            paywall: ['.mod-paywall', '.paywall-container-wrap'],
+            date: [
+                (root) =>
+                    root
+                        .querySelector('span[itemprop="datePublished"]')
+                        ?.getAttribute('content'),
+            ],
             main: ['.article-body > p'],
         },
         sourceNames: ['Stuttgarter Nachrichten', 'Stuttgarter Zeitung'],
