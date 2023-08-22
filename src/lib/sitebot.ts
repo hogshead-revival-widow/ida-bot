@@ -2,16 +2,16 @@ import { PORT_NAME } from 'src/lib/globals/consts.js';
 import logger from 'src/lib/utils/logger.js';
 import Result from 'src/lib/utils/result.js';
 import {
-    makeTimeInDaysRange,
-    stringToDate,
     assertNonNullish,
-    makeQuery,
     isReachable,
     isURL,
+    makeQuery,
+    makeTimeInDaysRange,
+    stringToDate,
 } from 'src/lib/utils/utils.js';
 
-import UI from 'src/lib/ui/ui.js';
 import STRINGS from 'examples/strings.js';
+import UI from 'src/lib/ui/ui.js';
 
 class SiteBot {
     private _port: chrome.runtime.Port | null;
@@ -66,7 +66,7 @@ class SiteBot {
         return date === undefined ? date : makeTimeInDaysRange(date, toleranceDays);
     }
     getQuery(
-        ignoreStartWords = 3, // erste drei Worte ignorieren (oft Sondersatz)
+        ignoreStartWords = 1, // erstes  Wort ignorieren (oft Sondersatz)
         ignoreEndWords = 1, // letztes Wort (oft abgekürzt) ignorieren
         extractLength = 5, // die 5 ersten Worte nach `ignoreWords` und die fünf letzten nehmen
         replaceInQuery = this._source.replaceInQuery,
