@@ -191,7 +191,7 @@ const sites: Site[] = [
     {
         match: '*://www.rhein-zeitung.de/*',
         selectors: {
-            query: ['.articlebody__teasertext'],
+            query: ['.articlebody__maintext', '.articlebody__teasertext'],
             paywall: ['.mrvpaywall__layer'],
             main: ['.articlebody__mainarticle'],
         },
