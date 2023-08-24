@@ -1,7 +1,7 @@
 {
     "scripts": {
         "bundle": "./bundle.sh",
-        "build": "rm -rf build && LOGGING=on  rollup -c",
+        "build": "rm -rf build && LOGGING=off  rollup -c",
         "dev": "LOGGING=on  rollup -c -w"
     },
     "devDependencies": {
