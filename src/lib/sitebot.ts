@@ -66,7 +66,7 @@ class SiteBot {
         return date === undefined ? date : makeTimeInDaysRange(date, toleranceDays);
     }
     getQuery(
-        ignoreStartWords = 1, // erstes  Wort ignorieren (oft Sondersatz)
+        ignoreStartWords = 2, // erstes  Wort ignorieren (oft Sondersatz)
         ignoreEndWords = 1, // letztes Wort (oft abgekürzt) ignorieren
         extractLength = 5, // die 5 ersten Worte nach `ignoreWords` und die fünf letzten nehmen
         replaceInQuery = this._source.replaceInQuery,
