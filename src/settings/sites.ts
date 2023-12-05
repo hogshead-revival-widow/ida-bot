@@ -301,6 +301,7 @@ const sites: Site[] = [
             ],
             paywall: ['#paywall-info'],
             main: ['#paywall'],
+            date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
         },
         sourceNames: ['Mannheimer Morgen', 'Mannheimer Morgen / Neckar-Bergstraße'],
     },
