@@ -18,6 +18,7 @@ const sites: Site[] = [
 
     {
         match: '*://www.sueddeutsche.de/*',
+        waitOnLoad: true,
         selectors: {
             query: [
                 '.sz-article-body__paragraph--reduced',
@@ -31,6 +32,7 @@ const sites: Site[] = [
                         ?.getAttribute('datetime'),
             ],
             paywall: [
+                '#sz-paywall',
                 'offer-page:not([contentproduct^="projekte"])',
                 "div[class^='offerpage]",
             ],
