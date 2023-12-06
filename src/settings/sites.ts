@@ -24,6 +24,7 @@ const sites: Site[] = [
                 '.sz-article-body__paragraph--reduced',
                 '.sz-article-body__paragraph',
                 'div:has(.publishdate-container) > p',
+                '.text.text-wide',
             ],
             date: [
                 (root) =>
