@@ -261,9 +261,9 @@ const sites: Site[] = [
     {
         match: '*://www.badische-zeitung.de/*',
         selectors: {
-            query: ['.freemium__preview'],
-            paywall: ['.freemium'],
-            main: ['.freemium__preview'],
+            query: ['.artikelPreview'],
+            paywall: ['article:has(.freemium)'],
+            main: ['#article'],
         },
         sourceNames: [
             'Badische Zeitung',
