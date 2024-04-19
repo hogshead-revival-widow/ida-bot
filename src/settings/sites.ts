@@ -103,18 +103,11 @@ const sites: Site[] = [
     {
         match: '*://www.faz.net/*',
         selectors: {
-            query: ['.atc-Text p'],
-            paywall: ['.js-atc-ContainerPaywall'],
-            main: ['.atc-Text'],
-            date: [
-                (root) =>
-                    root.querySelector('[class^="atc"] time')?.getAttribute('datetime'),
-            ],
+            query: ['.body-elements__paragraph'],
+            paywall: ['.paywall'],
+            main: ['.body-elements__paragraph'],
+            date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
         },
-        prepareSite: (root) =>
-            root
-                .querySelector('section.js-atc-ContainerPaywall ')
-                ?.classList.remove('atc-ContainerPaywall'),
         sourceNames: [
             'Frankfurter Allgemeine Zeitung (FAZ)',
             'Frankfurter Allgemeine Zeitung',
