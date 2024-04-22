@@ -212,9 +212,31 @@ const sites: Site[] = [
         match: '*://www.welt.de/*',
         waitOnLoad: true,
         selectors: {
-            query: ['.c-article-text', '.c-summary__intro'],
+            query: [
+                '.c-article-text',
+                '.c-summary__intro',
+                '.c-headline',
+                '.o-element-text',
+                'head > title',
+            ],
             paywall: ['.contains_walled_content'],
             main: ['.c-content-container'],
+            author: [
+                (root) =>
+                    Array.from(root.querySelectorAll('.c-author__link'))
+                        .map((author) =>
+                            (author as HTMLElement).innerText.trim().length === 0
+                                ? ''
+                                : '( ' +
+                                  (author as HTMLElement).innerText
+                                      .split(/\s+/)
+                                      .join(' ')
+                                      .trim() +
+                                  ' )'
+                        )
+                        .filter((author) => author.length > 0)
+                        .join(' AND '),
+            ],
             date: [
                 (root) =>
                     root.querySelector('.c-publish-date')?.getAttribute('datetime'),
@@ -236,6 +258,9 @@ const sites: Site[] = [
             'Welt am Sonntag Samstagsausgabe / NRW',
             'Welt News',
         ],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
     },
 
     /*
