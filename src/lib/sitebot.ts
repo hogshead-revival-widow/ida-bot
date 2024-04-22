@@ -10,7 +10,7 @@ import {
     stringToDate,
 } from 'src/lib/utils/utils.js';
 
-import STRINGS from 'examples/strings.js';
+import STRINGS from 'src/settings/strings.js';
 import UI from 'src/lib/ui/ui.js';
 
 class SiteBot {
@@ -55,47 +55,116 @@ class SiteBot {
         this._getUI().informNotReachable();
     }
 
-    // todo: einbinden + sz ausprobieren + beim querybauen berücksichtigen
-    getDateRange(
-        toleranceDays = 14 // Tage plus/minus Artikeldatum suchen
-    ) {
+    getDateRange() {
+        const toleranceDays =
+            this.site.queryMakerOptions?.toleranceDays ||
+            this._source.queryMakerOptions.toleranceDays; // Tage plus/minus Artikeldatum suchen
+
         if (this.site.selectors.date === undefined) return undefined;
         const date = this.site.selectors.date
             .map((getDateFn) => stringToDate(getDateFn(this._root)))
             .find((maybeDate) => maybeDate !== undefined);
         return date === undefined ? date : makeTimeInDaysRange(date, toleranceDays);
     }
-    getQuery(
-        ignoreStartWords = 2, // erstes  Wort ignorieren (oft Sondersatz)
-        ignoreEndWords = 1, // letztes Wort (oft abgekürzt) ignorieren
-        extractLength = 5, // die 5 ersten Worte nach `ignoreWords` und die fünf letzten nehmen
-        replaceInQuery = this._source.replaceInQuery,
-        removeFromQuery = this._source.removeFromQuery
-    ) {
-        if (typeof this.site.selectors.query === 'function')
-            return this.site.selectors.query(this._root, replaceInQuery);
+    getQuery() {
+        // Baue Query nach diesen Parametern
+        const ignoreStartWords =
+            this.site.queryMakerOptions?.ignoreStartWords ||
+            this._source.queryMakerOptions.ignoreStartWords;
+        const ignoreEndWords =
+            this.site.queryMakerOptions?.ignoreEndWords ||
+            this._source.queryMakerOptions.ignoreEndWords;
+        const queryTargetWords =
+            this.site.queryMakerOptions?.queryTargetWords ||
+            this._source.queryMakerOptions.queryTargetWords;
+        const replaceInQuery =
+            this.site.queryMakerOptions?.replaceInQuery ||
+            this._source.queryMakerOptions.replaceInQuery;
+        const removeFromQuery =
+            this.site.queryMakerOptions?.removeFromQuery ||
+            this._source.queryMakerOptions.removeFromQuery;
+        const selectorStrategy =
+            this.site.queryMakerOptions?.selectorStrategy ||
+            this._source.queryMakerOptions.selectorStrategy;
+        const addWildCardToSearchWords =
+            this.site.queryMakerOptions?.addWildCardToSearchWords ||
+            this._source.queryMakerOptions.addWildCardToSearchWords;
 
-        const maybeQuery = this.site.selectors.query
-            .map((selector) => this._root.querySelector(selector))
-            .filter(
-                (maybeElement) =>
-                    maybeElement !== null &&
-                    (maybeElement as HTMLElement).innerText.length > 0
-            )
-            .map((element) =>
-                makeQuery(
-                    element as HTMLElement,
-                    ignoreStartWords,
-                    ignoreEndWords,
-                    extractLength,
-                    replaceInQuery,
-                    removeFromQuery
-                )
-            )
-            .find((maybeQuery) => maybeQuery !== undefined);
+        const maybeQuery = [
+            ...new Set(
+                this.site.selectors.query
+                    .map((selector) => {
+                        logger(LoggerStatus.QUERYMAKER, `Selektor: ${selector}`);
+                        return this._root.querySelector(selector);
+                    })
+                    .filter(
+                        (maybeElement) =>
+                            maybeElement !== null &&
+                            (maybeElement as HTMLElement).innerText.length > 0
+                    )
+                    .map((element) =>
+                        makeQuery((element as HTMLElement).innerText, {
+                            ignoreStartWords,
+                            ignoreEndWords,
+                            queryTargetWords,
+                            replaceInQuery,
+                            removeFromQuery,
+                            selectorStrategy,
+                            addWildCardToSearchWords,
+                        })
+                    )
+                    .filter((maybeQuery) => maybeQuery !== undefined)
+            ),
+        ];
+        if (maybeQuery.length === 0) throw new Error('Cant extract query');
 
-        if (maybeQuery === undefined) throw new Error('Cant extract query');
-        return maybeQuery;
+        const query =
+            selectorStrategy === 'USE_FIRST_VALID'
+                ? maybeQuery[0]
+                : maybeQuery.map((query) => `( ${query} )`).join(' OR ');
+        logger(
+            LoggerStatus.QUERYMAKER,
+            `Selektorstrategie: ${selectorStrategy}
+            \n - Querykandidaten: ${JSON.stringify(maybeQuery)}
+            \n - Ergebnis: ${query}`
+        );
+
+        // hole nun ggf. Autor:innen
+        const wantsAuthor =
+            this.site.selectors.author !== undefined &&
+            this.site.selectors.author.length > 0;
+        if (!wantsAuthor) return query;
+        logger(LoggerStatus.QUERYMAKER, `Hänge Autor:innen an`);
+        const authors = [
+            ...new Set(
+                this.site.selectors.author !== undefined &&
+                this.site.selectors.author.length > 0
+                    ? this.site.selectors.author
+                          .map((extractor) => {
+                              const maybeAuthor = extractor(this._root);
+                              logger(
+                                  LoggerStatus.QUERYMAKER,
+                                  `Selektor (Autor): ${maybeAuthor}`
+                              );
+                              if (
+                                  typeof maybeAuthor !== 'string' ||
+                                  maybeAuthor.length === 0
+                              )
+                                  return undefined;
+                              return maybeAuthor;
+                          })
+                          .filter(
+                              (maybeElement) =>
+                                  maybeElement !== undefined && maybeElement.length > 0
+                          )
+                    : []
+            ),
+        ];
+        logger(LoggerStatus.QUERYMAKER, `Gefundene Autor:innen: ${authors}`);
+        if (authors.length === 0) return query;
+        const queryWithAutor = `( ${query} ) AND (${authors.join(' AND ')})`;
+        logger(LoggerStatus.QUERYMAKER, ` Ergebnis: ${queryWithAutor}`);
+        return queryWithAutor;
     }
 
     startRetrieval() {

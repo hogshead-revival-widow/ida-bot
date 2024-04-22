@@ -1,5 +1,5 @@
 import config from 'config.json';
-import STRINGS from 'examples/strings.js';
+import STRINGS from 'src/settings/strings.js';
 
 const source: Source = {
     baseURL: config.URL.HOST,
@@ -10,8 +10,16 @@ const source: Source = {
         xml: config.URL.PATHS.XML,
     },
     searchParams: config.SEARCH_PARAMS,
-    replaceInQuery: config.REPLACE_IN_QUERY,
-    removeFromQuery: config.REMOVE_FROM_QUERY,
+    queryMakerOptions: {
+        ignoreStartWords: config.QUERY_MAKER_OPTIONS.ignoreStartWords,
+        ignoreEndWords: config.QUERY_MAKER_OPTIONS.ignoreEndWords,
+        queryTargetWords: config.QUERY_MAKER_OPTIONS.queryTargetWords,
+        replaceInQuery: config.QUERY_MAKER_OPTIONS.replaceInQuery,
+        removeFromQuery: config.QUERY_MAKER_OPTIONS.removeFromQuery,
+        selectorStrategy: 'USE_FIRST_VALID',
+        addWildCardToSearchWords: config.QUERY_MAKER_OPTIONS.addWildCardToSearchWords,
+        toleranceDays: config.QUERY_MAKER_OPTIONS.toleranceDays,
+    },
     isLoggedIn: '.facet-header',
     LOGIN: [
         [

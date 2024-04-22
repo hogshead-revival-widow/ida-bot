@@ -21,6 +21,7 @@ declare global {
         // Diese Komponenten kommen ohne Nachrichten aus
         RESULT = 'RESULT',
         INJECTOR = 'INJECTOR',
+        QUERYMAKER = 'QUERYMAKER',
     }
     const enum MessageType {
         START = 'START',

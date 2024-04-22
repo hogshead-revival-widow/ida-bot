@@ -1,4 +1,5 @@
 import injection from 'injection';
+import logger from 'src/lib/utils/logger.js';
 
 export const makeTimeInDaysRange: (date: Date, toleranceDays: number) => DateRange = (
     date,
@@ -72,61 +73,84 @@ export const isReachable = async (url: string) => {
     }
 };
 
+/**
+ *
+ * @param query Der Query-String
+ * @param addWildCardToSearchWords Soll jedem Wort eine Wildcard hinzugefügt werden? (falls abgekürzt)
+ * @returns
+ */
+const finalizeQuery = (query: string, addWildCardToSearchWords: boolean) =>
+    addWildCardToSearchWords
+        ? query
+              .split(/\s+/)
+              .map((word) => word.split('').join('*'))
+              .join(' ')
+              .trim()
+        : query.trim();
+
+/** Baue aus gefundenem Text (der mindestens ein Zeichen lang ist) den Query */
 export const makeQuery = (
-    element: HTMLElement,
-    ignoreStartWords: number,
-    ignoreEndWords: number,
-    extractLength: number,
-    replace: Source['replaceInQuery'], // ["regexPattern":  "WertDerDafürGesetztWerdenSoll", ...}
-    remove: Source['removeFromQuery']
+    foundText: string,
+    rules: Omit<
+        Exclude<Required<Site['queryMakerOptions']>, undefined>,
+        'toleranceDays'
+    >
 ) => {
-    const cleanedText = cleanText(element.innerText, replace);
-    const wordsMax = toWords(cleanedText);
-    const cleanedTextWithRemovedWords = removeWords(cleanedText, remove);
-    const wordsMin = toWords(cleanedTextWithRemovedWords);
+    logger(LoggerStatus.QUERYMAKER, 'Baue Query');
+    logger(LoggerStatus.QUERYMAKER, `Eingangstext: ${foundText}`);
+    logger(LoggerStatus.QUERYMAKER, `Nutze Regeln: ${JSON.stringify(rules)}`);
 
-    if (queryIsToShort(wordsMax, ignoreStartWords + ignoreEndWords))
-        return [wordsMax.join(' ')];
-    if (queryIsToShort(wordsMin, ignoreStartWords + ignoreEndWords))
-        return [wordsMin.join(' ')];
-
-    const preparedWordsMax = wordsMax.slice(
-        ignoreStartWords,
-        wordsMax.length - ignoreEndWords
-    );
-    const preparedWordsMin = wordsMin.slice(
-        ignoreStartWords,
-        wordsMin.length - ignoreEndWords
-    );
-
-    if (queryIsToShort(preparedWordsMax, extractLength * 2))
-        return [preparedWordsMax.join(' ')];
-
-    if (queryIsToShort(preparedWordsMin, extractLength * 2))
-        return [preparedWordsMin.join(' ')];
-
-    return [
-        preparedWordsMin.slice(0, extractLength).join(' '),
-        preparedWordsMin.slice(-extractLength - 1).join(' '),
-    ];
-};
-
-const queryIsToShort = (words: string[], minLen: number) =>
-    words.length <= minLen || words.join(' ').replace(/\s/g, '').length <= minLen;
-
-const cleanText = (text: string, replace: Source['replaceInQuery']) => {
-    replace.forEach((rule) => {
-        text = text.replace(new RegExp(rule.pattern, rule.flags), rule.replaceWith);
+    // Wende zuerst Ersetzungsregeln an
+    // da diese ggf. nicht von der CS verarbeitbare Zeichen entfernen
+    let query = foundText.toLocaleLowerCase();
+    rules.replaceInQuery.forEach((rule) => {
+        query = query.replaceAll(
+            new RegExp(rule.pattern, rule.flags),
+            rule.replaceWith
+        );
     });
-    return text;
+    logger(LoggerStatus.QUERYMAKER, `Query nach Anwendung replaceInQuery: ${query}`);
+    if (asWords(query).length <= rules.queryTargetWords)
+        return finalizeQuery(query, rules.addWildCardToSearchWords);
+
+    // Wende dann einfache Ersetzungen an
+    // z.B. Stoppwörter entfernen
+    query = asWords(query)
+        .filter((word) => !rules.removeFromQuery.includes(word))
+        .join(' ');
+    logger(LoggerStatus.QUERYMAKER, `Query nach Anwendung removeFromQuery: ${query}`);
+    if (asWords(query).length <= rules.queryTargetWords)
+        return finalizeQuery(query, rules.addWildCardToSearchWords);
+
+    // Entferne ggf. Wörter am Anfang (oft geändert)
+    query =
+        rules.ignoreStartWords === 0
+            ? query
+            : asWords(query).slice(rules.ignoreStartWords).join(' ');
+    logger(LoggerStatus.QUERYMAKER, `Query nach Anwendung ignoreStartWords: ${query}`);
+    if (asWords(query).length <= rules.queryTargetWords)
+        return finalizeQuery(query, rules.addWildCardToSearchWords);
+
+    // Entferne Endwörter (oft abgeschnittenes Wort)
+    query =
+        rules.ignoreEndWords === 0
+            ? query
+            : asWords(query)
+                  .slice(0, asWords(query).length - rules.ignoreEndWords)
+                  .join(' ');
+    logger(LoggerStatus.QUERYMAKER, `Query nach Anwendung ignoreEndWords: ${query}`);
+    if (asWords(query).length <= rules.queryTargetWords)
+        return finalizeQuery(query, rules.addWildCardToSearchWords);
+
+    // Schneide vom Query von vorne ab, um auf die Ziellänge zu kommen
+    // da der Textanfang häufiger als das Ende verändert wird
+    query = asWords(query).slice(-rules.queryTargetWords).join(' ').trim();
+    logger(LoggerStatus.QUERYMAKER, `Query nach Anwendung queryTargetWords: ${query}`);
+    return finalizeQuery(query, rules.addWildCardToSearchWords);
 };
 
-const removeWords = (text: string, remove: Source['removeFromQuery']) => {
-    remove.forEach((word) => {
-        text = text.replace(` ${word} `, ' ');
-    });
-
-    return text;
-};
-const toWords = (text: string) =>
-    text.split(' ').filter((maybeWord) => maybeWord.length > 0);
+const asWords = (text: string) =>
+    text
+        .trim()
+        .split(/\s+/)
+        .filter((maybeWord) => maybeWord.length > 0);
