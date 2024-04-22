@@ -385,9 +385,22 @@ const sites: Site[] = [
     {
         match: '*://bnn.de/*',
         selectors: {
-            query: ['.figure__caption-text', '.intro', 'immersive-header__intro'],
+            query: [
+                '.figure__caption-text',
+                '.intro',
+                '.immersive-header__intro',
+                '.header',
+            ],
             paywall: ['.article__paywall, .paywall'],
             main: ['.article__body, .longread-content'],
+            date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
+            author: [
+                (root) =>
+                    root
+                        .querySelector('.author a') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
+            ],
         },
         prepareSite: (root) =>
             root
@@ -402,6 +415,9 @@ const sites: Site[] = [
             'Badische Neueste Nachrichten',
             'Badische Neueste Nachrichten / Ettlingen',
         ],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
     },
 
     {
