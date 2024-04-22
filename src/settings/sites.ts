@@ -427,12 +427,24 @@ const sites: Site[] = [
             query: [
                 '.picture__figcaption__caption',
                 '.article-header-default__description',
+                'header > title',
+                '.article-header-default__headline__overline',
             ],
             paywall: ['#paywall-info'],
             main: ['#paywall'],
             date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
+            author: [
+                (root) =>
+                    root
+                        .querySelector('.article-header-meta__data--author a') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
+            ],
         },
         sourceNames: ['Mannheimer Morgen', 'Mannheimer Morgen / Neckar-Bergstraße'],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
     },
 
     {
