@@ -465,9 +465,28 @@ const sites: Site[] = [
         match: '*://www.volksfreund.de/*',
         waitOnLoad: true,
         selectors: {
-            query: ['[data-cy^="article"] > p', '.park-article__body > p > strong'],
+            query: [
+                '[data-cy^="article"] > p',
+                '.park-article__body > p > strong',
+                'head > title',
+                '[data-cy="article_headline"]',
+                '[data-cy="intro"]',
+                '[data-cy="park-figure"] p',
+            ],
             paywall: ['.park-paywall-content', '.park-widget'],
             main: ['[data-cy^="article"] > p', '.park-article'],
+            date: [
+                (root) =>
+                    root.querySelector('[data-cy="date"]')?.getAttribute('content'),
+            ],
+            author: [
+                (root) =>
+                    Array.from(root.querySelectorAll('aside[data-cy="authorsbox"] a'))
+                        // @ts-ignore
+                        .map((a) => a?.innerText)
+                        .filter((a) => typeof a === 'string' && a.trim().length > 0)
+                        .join(' '),
+            ],
         },
         sourceNames: [
             'Trierischer Volksfreund / Zeitung für Trier und das Trierer Land',
@@ -477,6 +496,9 @@ const sites: Site[] = [
             'Trierischer Volksfreund / Bitburg-Prüm (TVBP)',
             'Trierischer Volksfreund / Vulkaneifel (TVV)',
         ],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
     },
 
     {
