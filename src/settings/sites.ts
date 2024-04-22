@@ -91,7 +91,7 @@ const sites: Site[] = [
             date: [
                 (root) => root.querySelector('article time')?.getAttribute('datetime'),
             ],
-            paywall: ['.gate', '.gate.article__item'],
+            paywall: ['#paywall', '.gate', '.gate.article__item'],
             main: ['.article-page .article__item'],
         },
         sourceNames: [
