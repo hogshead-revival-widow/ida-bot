@@ -312,7 +312,7 @@ const sites: Site[] = [
         match: '*://www.stuttgarter-nachrichten.de/*',
         waitOnLoad: true,
         selectors: {
-            query: ['.article-body > p'],
+            query: ['.article-body > p', '.intro-text', 'head > title'],
             paywall: ['.mod-paywall', '.paywall-container-wrap'],
             date: [
                 (root) =>
@@ -320,9 +320,24 @@ const sites: Site[] = [
                         .querySelector('span[itemprop="datePublished"]')
                         ?.getAttribute('content'),
             ],
+            author: [
+                (root) =>
+                    root
+                        .querySelector('a[itemprop="author"]') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
+            ],
             main: ['.article-body > p'],
         },
-        sourceNames: ['Stuttgarter Nachrichten', 'Stuttgarter Zeitung'],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
+        sourceNames: [
+            'Stuttgarter Nachrichten',
+            'Schwarzwälder Bote (SBOT)',
+            'Schwarzwälder Bote Online (SBOTO)',
+            'Stuttgarter Zeitung',
+        ],
     },
 
     {
