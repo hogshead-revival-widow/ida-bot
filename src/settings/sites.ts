@@ -9,6 +9,43 @@ const szSourceNames: Site['sourceNames'] = [
     'Süddeutsche Zeitung Magazin',
 ];
 
+const stN: Site = {
+    match: '*://www.stuttgarter-nachrichten.de/*',
+    waitOnLoad: true,
+    selectors: {
+        query: ['.article-body > p', '.intro-text', 'head > title'],
+        paywall: ['.mod-paywall', '.paywall-container-wrap'],
+        date: [
+            (root) =>
+                root
+                    .querySelector('span[itemprop="datePublished"]')
+                    ?.getAttribute('content'),
+        ],
+        author: [
+            (root) =>
+                root
+                    .querySelector('a[itemprop="author"]') // @ts-ignore
+                    ?.innerText?.split(/\s+/)
+                    ?.join(' '),
+            (root) =>
+                root
+                    .querySelector('a.author') // @ts-ignore
+                    ?.innerText?.split(/\s+/)
+                    ?.join(' '),
+        ],
+        main: ['.article-body > p'],
+    },
+    queryMakerOptions: {
+        selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+    },
+    sourceNames: [
+        'Stuttgarter Nachrichten',
+        'Schwarzwälder Bote (SBOT)',
+        'Schwarzwälder Bote Online (SBOTO)',
+        'Stuttgarter Zeitung',
+    ],
+};
+
 const sites: Site[] = [
     /*
         Überregional
@@ -308,53 +345,11 @@ const sites: Site[] = [
         ],
     },
 
-    {
-        match: '*://www.stuttgarter-nachrichten.de/*',
-        waitOnLoad: true,
-        selectors: {
-            query: ['.article-body > p', '.intro-text', 'head > title'],
-            paywall: ['.mod-paywall', '.paywall-container-wrap'],
-            date: [
-                (root) =>
-                    root
-                        .querySelector('span[itemprop="datePublished"]')
-                        ?.getAttribute('content'),
-            ],
-            author: [
-                (root) =>
-                    root
-                        .querySelector('a[itemprop="author"]') // @ts-ignore
-                        ?.innerText?.split(/\s+/)
-                        ?.join(' '),
-            ],
-            main: ['.article-body > p'],
-        },
-        queryMakerOptions: {
-            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
-        },
-        sourceNames: [
-            'Stuttgarter Nachrichten',
-            'Schwarzwälder Bote (SBOT)',
-            'Schwarzwälder Bote Online (SBOTO)',
-            'Stuttgarter Zeitung',
-        ],
-    },
+    { ...stN },
 
     {
+        ...stN,
         match: '*://www.stuttgarter-zeitung.de/*',
-        waitOnLoad: true,
-        selectors: {
-            query: ['.article-body > p'],
-            paywall: ['.mod-paywall', '.c1-offers-target'],
-            main: ['.article-body > p'],
-            date: [
-                (root) =>
-                    root
-                        .querySelector('span[itemprop="datePublished"]')
-                        ?.getAttribute('content'),
-            ],
-        },
-        sourceNames: ['Stuttgarter Zeitung', 'Stuttgarter Nachrichten'],
     },
 
     {
