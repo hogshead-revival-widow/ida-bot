@@ -56,6 +56,8 @@ const sites: Site[] = [
         waitOnLoad: true,
         selectors: {
             query: [
+                '.teaser', // /projekte
+                '.headline', // /projekte
                 '.sz-article-body__paragraph--reduced',
                 '.sz-article-body__paragraph',
                 'div:has(.publishdate-container) > p',
@@ -79,6 +81,12 @@ const sites: Site[] = [
                                     .join(' ')} )`
                         )
                         .join(' AND '),
+                // /projekte
+                (root) =>
+                    root
+                        .querySelector('.author a') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
             ],
             paywall: [
                 '#sz-paywall',
