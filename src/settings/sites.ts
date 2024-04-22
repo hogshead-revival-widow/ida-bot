@@ -355,15 +355,31 @@ const sites: Site[] = [
     {
         match: '*://www.badische-zeitung.de/*',
         selectors: {
-            query: ['.artikelPreview'],
+            query: ['.artikelPreview', '.article-site__topic', 'head > title'],
             paywall: ['article:has(.freemium)'],
             main: ['#article'],
+            date: [
+                (root) => {
+                    const articleDate = root
+                        ?.querySelector('a[href^="/archiv/"')
+                        // @ts-ignore
+                        ?.href.split('archiv')[1];
+                    if (typeof articleDate !== 'string' || articleDate.length !== 11)
+                        return undefined;
+                    const [_, year, month, day] = articleDate.split('/').map(Number);
+                    return new Date(year, month - 1, day).toISOString();
+                },
+            ],
+            // Autor ist hier keine gute Idee
         },
         sourceNames: [
             'Badische Zeitung',
             'Badische Zeitung / Freiburg',
             'Badische Zeitung / Offenburg',
         ],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
     },
 
     {
