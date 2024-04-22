@@ -180,8 +180,10 @@ const sites: Site[] = [
                 '.article-body > div > p:nth-child(1)',
                 '.headline',
                 '.article-header__headline',
+                '.document-title__kicker',
                 '.document-title__headline',
                 '.document-title',
+                'header > title',
             ],
             // es können jetzt auch Autor:innen zur Suche herangezogen werden
             // diese werden, wenn vorhanden, als Muss-Suchkriterium ergänzt
