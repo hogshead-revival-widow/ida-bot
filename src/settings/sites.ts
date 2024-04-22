@@ -32,12 +32,27 @@ const sites: Site[] = [
                         ?.getAttribute('datetime'),
             ],
 
+            author: [
+                (root) =>
+                    Array.from(root.querySelectorAll('[data-manual="author"] a'))
+                        .map(
+                            (a) =>
+                                ` ( ${(a as HTMLElement).innerText
+                                    .split(/\s+/)
+                                    .join(' ')} )`
+                        )
+                        .join(' AND '),
+            ],
             paywall: [
                 '#sz-paywall',
                 'offer-page:not([contentproduct^="projekte"])',
                 "div[class^='offerpage]",
             ],
             main: ["div[itemprop='articleBody']", '.offer-page-wrapper'],
+        },
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+            queryTargetWords: 5,
         },
         sourceNames: szSourceNames,
     },
