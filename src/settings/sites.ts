@@ -1,6 +1,4 @@
-/*
-    Vgl. `examples/sites.ts` for eine Beispiel-Seite.
-*/
+// import source from 'src/settings/source.js';
 
 const szSourceNames: Site['sourceNames'] = [
     'Süddeutsche Zeitung (SZ)',
@@ -25,6 +23,7 @@ const sites: Site[] = [
                 '.sz-article-body__paragraph',
                 'div:has(.publishdate-container) > p',
                 '.text.text-wide',
+                '[data-manual="teaserText"]',
             ],
             date: [
                 (root) =>
@@ -32,6 +31,7 @@ const sites: Site[] = [
                         .querySelector('[id ^="article"] time')
                         ?.getAttribute('datetime'),
             ],
+
             paywall: [
                 '#sz-paywall',
                 'offer-page:not([contentproduct^="projekte"])',
@@ -72,6 +72,7 @@ const sites: Site[] = [
                 '.article__item > .paragraph:nth-child(2)',
                 '.article__item > .paragraph',
             ],
+
             date: [
                 (root) => root.querySelector('article time')?.getAttribute('datetime'),
             ],
@@ -125,9 +126,31 @@ const sites: Site[] = [
         selectors: {
             query: [
                 '.article-body > div > p:nth-child(1)',
-                '.article-body > div > p:nth-child(2)',
                 '.headline',
                 '.article-header__headline',
+                '.document-title__headline',
+                '.document-title',
+            ],
+            // es können jetzt auch Autor:innen zur Suche herangezogen werden
+            // diese werden, wenn vorhanden, als Muss-Suchkriterium ergänzt
+            // es werden alle hier angegebenen Extraktoren genutzt,
+            // deren Ergebnisse werden mit verundet
+            // in diesem Beispiel wird nur ein Autorfeld extrahiert,
+            // wird ein Name gefunden, werden alle Whitespaces
+            // in ein einfaches Leerzeichen überführt,
+            // in diesem Beispiel würde aus dem Autor "Oskar   Müller" => "Oskar Müller"
+            // und es würde an den finalen Query so angehängt werden: '(...query) AND ( (Oskar Müller) )'
+            author: [
+                (root) =>
+                    root
+                        .querySelector('.article_author') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
+                (root) =>
+                    root
+                        .querySelector('.author__name') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
             ],
             date: [
                 (root) =>
@@ -135,6 +158,26 @@ const sites: Site[] = [
             ],
             paywall: ['.conversion', '.offer-module__ps', '.offer-module__red'],
             main: ['.conversion-page', '.offer-module'],
+        },
+        queryMakerOptions: {
+            // vgl.: settings/config.json für Standardeinstellungen
+            // diese können quellspezifisch überschrieben werden
+            // dazu wie in diesem Beispiel die Sonderregeln für diese Quelle angeben
+            ignoreStartWords: 0, // n erste Wörter ignorieren (oft Sondersatz)
+            ignoreEndWords: 0, // diese n letzten Wörter (oft abgekürzt) ignorieren
+            queryTargetWords: 3, /// wie viele soll Wörter soll der Query möglichst haben? höhere Werte verringern false positives, erhöhen aber false negatives
+            toleranceDays: 2, // wie viele Tage um das +- Datum soll gesucht werden? (wenn date oben  in selectors gesetzt wurde); kleine Zahl ergibt Sinn bei Quellen, die idR nur aktuell interessieren
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR', // soll nur der erste Selektor, der einen Text findet, genutzt werden (default) oder alle verordert?
+            /*
+            // weitere Einstellmöglichkeiten:
+            removeFromQuery: ["und", "die"]; // ersetze diese Zeichenketten durch ein Leerzeichen (standardmäßig aktiv, ersetzt sehr häufig vorkommende Wörter wie z.B. "und")
+            // removeFromQuery: hier ist es sinvoll, eigene Regeln nach den Standardregeln zu ergänzen:
+            // dazu muss der Source-Import oben wieder eingeschlossen weden
+            removeFromQuery: [...source.source.queryMakerOptions.removeFromQuery, "zusätzlich zu entfernen"]
+            // replaceInQuery: auch hier macht es Sinn, die Standardregeln zu ergänzen analog zu removeFromQuery
+            replaceInQuery: [pattern: "...", flags: "..",replaceWith: ".."]; // wende diesen regulären Ausdruck zur Transformation an (standardmäßig aktiv, ersetzt z.B. Sonderzeichen)
+            addWildCardToSearchWords: false; // soll jedem Wort im Query eine Wildcard hinzugefügt werden? wenn der Query "Hund beißt Mann" ist, wird er zu "H*u*n*d b*e*i*ß*t M*a*n*n" -- nur sinnvoll mit längerem Query (standardmäßig deaktiviert)
+            */
         },
         sourceNames: [
             'Bild online',
