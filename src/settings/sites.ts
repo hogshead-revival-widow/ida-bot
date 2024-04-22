@@ -448,13 +448,14 @@ const sites: Site[] = [
     },
 
     {
+        // deaktiviert
         match: '*://www.fnweb.de/*',
         selectors: {
             query: [
                 '.picture__figcaption__caption',
                 '.article-header-default__description',
             ],
-            paywall: ['#paywall-info'],
+            paywall: ['#paywall-info-placeholder-do-not-activate-deactivated'],
             main: ['#paywall'],
         },
         sourceNames: ['Fränkische Nachrichten'],
