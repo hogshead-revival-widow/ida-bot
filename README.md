@@ -2,14 +2,19 @@ IDA-Bot erlaubt prototypisch die Teilautomatisierung des Suchvorgangs nach korre
 
 # Überblick
 
-Einen Überblick über den Programmablauf findest Du [hier](#programmablauf-schema). Zudem sind die [Beispieldateien](examples/) ausführlich kommentiert.
+Einen Überblick über den Programmablauf findest Du [hier](#programmablauf-schema).
+
+# Quelle einpflegen
+
+Möglich in [sites.ts](/src/settings/sites.ts). Dort sind viele Beispielquellen zu finden.
+Weiterführend kann hilfreich, den Site-Typen in [types.d.ts](/src/lib/globals/types.d.ts) anzusehen.
 
 # Entwicklung
 
 1. Klone das Repo.
 2. CD in das Verzeichnis.
 3. Installiere die Pakete: `npm i`. [Dazu muss npm und Node.js installiert sein.](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-4. Passe die Konfiguration ggf. an, entsprechend der Anleitungen der Dateien in [`examples`](examples/) und kopiere die angepassten Dateien entsprechend der dort angegebenen Pfadangaben in das richtige Verzeichnis.
+4. Passe die Konfiguration ggf. an
 5. Bau die Browserweiterung: `npm run dev`.
     - Das Skript bleibt aktiv, da die Browserweiterung bei Veränderungen automatisch aktualisiert wird ([mehr dazu](https://www.extend-chrome.dev/rollup-plugin)).
 6. Die gebauten Dateien findest du in `build/`.
@@ -17,7 +22,7 @@ Einen Überblick über den Programmablauf findest Du [hier](#programmablauf-sche
     - Der Reloader ist recht simpel; prüfe bei Problemen, ob er hängen geblieben ist, indem Du dir die Ausgabe von `npm run dev`ansiehst. Bleibt er hängen, musst Du ihn händisch abbrechen (`STRG-C`) und wieder neu mit `npm run dev` starten.
 
 Willst Du später deine fertige Version verteilen, solltest Du sie mit `npm run bundle` (ruft `bundle.sh` auf) bauen. Dort ist sowohl das Logging deaktiviert als auch der Reloader. Die Releaseversion findest Du in `bundle/`; die dortige `bot.zip` kann schließlich in den Chrome Web Store hochgeladen werden. Denk dran, ggf. die Versionsnummer anzupassen
-in [`src/settings/config.json` unter `VERSION`](examples/config.jsonc). Die Konfigurationsdatei existiert bei Neuinstallation nicht. [Hier](examples/config.jsonc) findest Du eine ausführlich kommentierte Beispiel-Konfiguration.
+in [`src/settings/config.json` unter `VERSION`]
 
 3. Bau die Produktivversion mit `npm run bundle`.
 
@@ -34,20 +39,19 @@ in [`src/settings/config.json` unter `VERSION`](examples/config.jsonc). Die Konf
 
 ## Allgemeine Einstellungen
 
-Allgemeine Einstellungen können in der [Konfigurationsdatei](src/settings/config.json) vorgenommen werden. Die Konfigurationsdatei existiert bei Neuinstallation nicht. [Hier](examples/config.jsonc) findest Du eine ausführlich kommentierte Beispiel-Konfiguration. Aus dieser wird auch das Manifest generiert, daher ist eine Manipulation der Manifests in aller Regel nicht nötig.
+Allgemeine Einstellungen können in der [Konfigurationsdatei](src/settings/config.json) vorgenommen werden. Die Konfigurationsdatei existiert bei Neuinstallation nicht. Aus dieser wird auch das Manifest generiert, daher ist eine Manipulation der Manifests in aller Regel nicht nötig.
 
 ## Seite anpassen/hinzufügen
 
 Seiten hinzufügen wurde stark vereinfacht. Unter _Seite/site_ wird dabei eine Website verstanden, die einen Artikel besitzt, von dem ein Query extrahiert werden soll. Trage dazu deine Seite in [`src/settings/sites.ts`](src/settings/sites.ts) ein.
 
--   Diese Datei existiert bei Neuinstallation, ist aber ggf. mit für dich irrelevanten Werten gefüllt. Prüfe sie und passe sie ggf. entsprechend der [ausführlich kommentierten Beispielseite](examples/site.ts) an.
+-   Diese Datei existiert bei Neuinstallation, ist aber ggf. mit für dich irrelevanten Werten gefüllt. Prüfe sie und passe sie ggf. an.
 -   Ein zusätzlicher Eintrag im Manifest ist nicht mehr nötig. Die neue Seite wird _automatisch im Manifest aufgenommen_.
 -   [Hier unter `Site`](src/lib/globals/types.d.ts) findest Du den korrespondierenden Typen.
 
 ## Quelle anpassen/hinzufügen
 
-Das Abrufverhalten kann in der Datei [`src/settings/source.ts`](src/settings/source.ts) geändert werden. Unter _Quelle_ bzw _source_ wird dabei das Archiv verstanden, in dem
-auf Basis des von der _Site_ extrahierten Querys nach weiteren Informationen gefragt wird. Die Source-Datei existiert bei Neuinstallation, ist aber ggf. so für dich nicht verwendbar. [Dieses ausführlich kommentierte Beispiel](examples/source.ts) hilft dir ggf. bei der Anpassung.
+Das Abrufverhalten kann in der Datei [`src/settings/source.ts`](src/settings/source.ts) geändert werden. Unter _Quelle_ bzw _source_ wird dabei das Archiv verstanden, in dem auf Basis des von der _Site_ extrahierten Querys nach weiteren Informationen gefragt wird. Die Source-Datei existiert bei Neuinstallation, ist aber ggf. so für dich nicht verwendbar.
 
 Weitere Informationen:
 
@@ -56,7 +60,7 @@ Weitere Informationen:
 
 ## Weitere Einstellungen
 
--   Angezeigte Texte: Alle angezeigten Texte können in `src/lib/settings/strings.ts` geändert werden. Die Datei existiert nicht bei Neuinstallation und kann nach diesem [ausführlich kommentierten Beispiel](examples/strings.ts) angelegt werden. Tiefgreifende Änderungen können zudem in an den [Templates](src/lib/ui/templates/) vorgenommen werden.
+-   Angezeigte Texte: Alle angezeigten Texte können in `src/lib/settings/strings.ts` geändert werden. Tiefgreifende Änderungen können zudem in an den [Templates](src/lib/ui/templates/) vorgenommen werden.
 -   Layout: Passe [Bulma](https://bulma.io/) nach deinen Vorstellungen an und ersetze die Datei `src/css/bulma.min.css` durch die von dir generierte.
 -   Retrieval: Die eigentliche Retrieval-Logik findet sich in der Datei [`src/lib/sourcebot.ts`](src/lib/sourcebot.ts) in der SourceBot-Methode `_getRetrievalURL`. Sie wird sinnvollerweise am besten über die die [Konfigurationsdatei](#allgemeine-einstellungen) geändert.
 -   Logging: Das Logging-Verhalten wird über eine Umgebungsvariable gesteuert. [Mehr dazu hier](#logging).
@@ -65,13 +69,13 @@ Weitere Informationen:
 
 1. Das [Background-Skript](src/background.ts) läuft im Hintergrund des Browsers. Bei Installation wird die FAQ angezeigt. Solange nichts weiter passiert, bleibt es inaktiv.
 
-2. Ruft die Nutzer:in eine Pressewebsite auf, die zu einem Matchpattern einer Seite passt, die in der Datei [`src/settings/sites.ts`](examples/site.ts) (Property `match`) definiert ist, startet das [Content-Skript](src/content.ts) den [_SiteBot _](src/lib/sitebot.ts).
+2. Ruft die Nutzer:in eine Pressewebsite auf, die zu einem Matchpattern einer Seite passt, die in der Datei [`src/settings/sites.ts`](src/settings//sites.ts) (Property `match`) definiert ist, startet das [Content-Skript](src/content.ts) den [_SiteBot _](src/lib/sitebot.ts).
 
 3. Der _SiteBot_ prüft, ob etwas zu tun ist. Liegt der Artikel im Volltext vor, passiert nichts weiter.
 
-4. Liegt der Artikel auf der Pressewebsite nicht im Volltext vor und ist das Archiv (direkt oder per Fallback unter der in der Konfiguration [`src/settings/config.json`](examples/config.jsonc) angegebenen URL) erreichbar, wird der Nutzer:in angeboten, im Archiv nach dem Text zu suchen. Das geschieht allerdings erst auf ihren ausdrücklichen Wunsch hin. Ein automatischer Abruf findet nicht statt.
+4. Liegt der Artikel auf der Pressewebsite nicht im Volltext vor und ist das Archiv (direkt oder per Fallback unter der in der Konfiguration [`src/settings/config.json`](src/settings/config.json) angegebenen URL) erreichbar, wird der Nutzer:in angeboten, im Archiv nach dem Text zu suchen. Das geschieht allerdings erst auf ihren ausdrücklichen Wunsch hin. Ein automatischer Abruf findet nicht statt.
 
-5. Verlangt die Nutzer:in nach dem Volltext, wird der Query für die Archivseite extrahiert (entsprechend der Weise, die die in der Datei [`src/settings/sites.ts`](examples/site.ts) definiert ist).
+5. Verlangt die Nutzer:in nach dem Volltext, wird der Query für die Archivseite extrahiert (entsprechend der Weise, die die in der Datei [`src/settings/sites.ts`](src/settings/sites.ts) definiert ist).
 
 6. Der _SiteBot_ öffnet einen Port (mehr dazu: [MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/Port), [Chrome-Doku](https://developer.chrome.com/docs/extensions/mv3/messaging/#connect)) und lauscht auf diesem. Wird eine Message über den Port gesendet, empfängt er diese; schickt er eine Nachricht, verschickt er sie über den Port.
 
@@ -83,11 +87,11 @@ Weitere Informationen:
 
 10. Sobald der _Reader_ diese Nachricht erhält, startet er den _SourceBot_ und übergibt ihm die für die Suche relevanten Informationen aus der `MessageInit`-Nachricht.
 
-11. Der [_SourceBot_](src/lib/sourcebot.ts) öffnet nun das Archiv in einem neuen Browser-Tab. Die URL dazu wird auf Basis der in der Konfiguration [`src/settings/config.json`](examples/config.jsonc) angebenen URL (also `config.HOST` bzw. `config.FALLBACK_HOST`) und der `SEARCH_PARAMS` generiert. Es startet den [_Injector_](src/lib/injection/injector.ts). Der _SourceBot_ lauscht auf Veränderungen im Tab; von sich aus tut der Injector zunächst nichts.
+11. Der [_SourceBot_](src/lib/sourcebot.ts) öffnet nun das Archiv in einem neuen Browser-Tab. Die URL dazu wird auf Basis der in der Konfiguration [`src/settings/config.json`](src/settings/config.json) angebenen URL (also `config.HOST` bzw. `config.FALLBACK_HOST`) und der `SEARCH_PARAMS` generiert. Es startet den [_Injector_](src/lib/injection/injector.ts). Der _SourceBot_ lauscht auf Veränderungen im Tab; von sich aus tut der Injector zunächst nichts.
 
-12. Sobald der Tab vollständig geladen ist, ruft _SourceBot_ den erste Schritt auf. Ein Schritt ist alles, was [unterhalb der LOGIN bzw. SEARCH-Phase für diese Quelle angegeben in `src/settings/source.ts`](examples/source.ts) ist. Der nächste Schritt wird ausgelöst, wenn sich der Tab verändert.
+12. Sobald der Tab vollständig geladen ist, ruft _SourceBot_ den erste Schritt auf. Ein Schritt ist alles, was [unterhalb der LOGIN bzw. SEARCH-Phase für diese Quelle angegeben in `src/settings/source.ts`](src/settings/source.ts) ist. Der nächste Schritt wird ausgelöst, wenn sich der Tab verändert.
 
-13. Vor jedem Schritt prüft der _SourceBot_, ob die Nutzer:in eingeloggt ist (entsprechend `isLoggedIn` in der [Source-Datei `src/settings/source.ts`](examples/source.ts)). Ist sie eingeloggt, wird zur Such-Phase gesprungen. Sie gilt als eingeloggt, wenn im aktuellen Dokument mit dem CSS-Selektor, der in `source` bei `isLoggedIn` angegeben ist, ein Element gefunden wird.
+13. Vor jedem Schritt prüft der _SourceBot_, ob die Nutzer:in eingeloggt ist (entsprechend `isLoggedIn` in der [Source-Datei `src/settings/source.ts`](src/settings/source.ts)). Ist sie eingeloggt, wird zur Such-Phase gesprungen. Sie gilt als eingeloggt, wenn im aktuellen Dokument mit dem CSS-Selektor, der in `source` bei `isLoggedIn` angegeben ist, ein Element gefunden wird.
 
 14. Der _SourceBot_ führt nun alle Aktionen des jeweiligen Schrittes aus. Die Ausführungsreihenfolge richtet sich der dort angegebenen Reihenfolge.
 
@@ -97,7 +101,7 @@ Weitere Informationen:
 
 17. Der _Injector_ injiziert nun die Aktion. Dabei sind [einige Besonderheiten zu berücksichtigen, so wird etwa die Aktionsfunktion vom Ausführungskontext isoliert ausgeführt](https://developer.chrome.com/docs/extensions/reference/scripting/#runtime-functions).
 
-18. Tritt ein Fehler während der Ausführung der Aktion auf, **bricht der Suchvorgang ab**. Der Nutzer:in wird vom _SiteBot_ via _Reader_ und _SourceBot_ der Misserfolg gemeldet. Der Archiv-Tab bleibt offen, damit die Nutzer:in ggf. selbst dort nach dem Artikel suchen kann. **Ausnahme**: Hat die Aktion allerdings das Property `onErrorRetry` in der [Source-Datei `src/settings/source.ts`](examples/source.ts) , wird sie diesem entsprechend wiederholt, statt direkt abzubrechen.
+18. Tritt ein Fehler während der Ausführung der Aktion auf, **bricht der Suchvorgang ab**. Der Nutzer:in wird vom _SiteBot_ via _Reader_ und _SourceBot_ der Misserfolg gemeldet. Der Archiv-Tab bleibt offen, damit die Nutzer:in ggf. selbst dort nach dem Artikel suchen kann. **Ausnahme**: Hat die Aktion allerdings das Property `onErrorRetry` in der [Source-Datei `src/settings/source.ts`](src/settings/source.ts) , wird sie diesem entsprechend wiederholt, statt direkt abzubrechen.
 
 19. Gibt es einen weiteren Schritt, wird nun dieser ausgeführt und es geht mit der nächsten Aktion wieder neu mit (16) weiter.
 
