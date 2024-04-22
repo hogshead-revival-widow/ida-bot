@@ -273,6 +273,14 @@ const sites: Site[] = [
             query: ['.articlebody__maintext', '.articlebody__teasertext'],
             paywall: ['.mrvpaywall__layer'],
             main: ['.articlebody__mainarticle'],
+            date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
+            author: [
+                (root) =>
+                    root
+                        .querySelector('.author a') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
+            ],
         },
 
         sourceNames: [
