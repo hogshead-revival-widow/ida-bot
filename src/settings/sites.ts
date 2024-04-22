@@ -504,9 +504,17 @@ const sites: Site[] = [
     {
         match: '*://www.swp.de/*',
         selectors: {
-            query: ['.article-text'],
+            query: ['.article-text', 'h1', '.lead', 'figure figcaption'],
             paywall: ['.paywall_container'],
             main: ['.article-content'],
+            date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
+            author: [
+                (root) =>
+                    root
+                        .querySelector('a.authorName') // @ts-ignore
+                        ?.innerText?.split(/\s+/)
+                        ?.join(' '),
+            ],
         },
 
         sourceNames: [
@@ -514,6 +522,9 @@ const sites: Site[] = [
             'Südwest Presse / Neckar-Chronik',
             'Südwest Presse',
         ],
+        queryMakerOptions: {
+            selectorStrategy: 'USE_ALL_VALID_WITH_OR',
+        },
     },
 ];
 
