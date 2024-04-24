@@ -13,8 +13,17 @@ const stN: Site = {
     match: '*://www.stuttgarter-nachrichten.de/*',
     waitOnLoad: true,
     selectors: {
-        query: ['.article-body > p', '.intro-text', 'head > title'],
-        paywall: ['.mod-paywall', '.paywall-container-wrap'],
+        query: [
+            '.article-body > p',
+            '.intro-text',
+            'head > title',
+            'figcaption',
+            '.article-kicker',
+        ],
+        paywall: [
+            '.mod-paywall:not([style*="display: none"])',
+            '.paywall-container-wrap:not([style*="display: none"])',
+        ],
         date: [
             (root) =>
                 root
@@ -36,6 +45,7 @@ const stN: Site = {
         main: ['.article-body > p'],
     },
     queryMakerOptions: {
+        ignoreEndWords: 3,
         selectorStrategy: 'USE_ALL_VALID_WITH_OR',
     },
     sourceNames: [
