@@ -175,7 +175,7 @@ const sites: Site[] = [
         match: '*://www.faz.net/*',
         selectors: {
             query: ['.body-elements__paragraph'],
-            paywall: ['.paywall'],
+            paywall: ['.paywall', '.regwall'],
             main: ['.body-elements__paragraph'],
             date: [(root) => root.querySelector('time')?.getAttribute('datetime')],
         },
