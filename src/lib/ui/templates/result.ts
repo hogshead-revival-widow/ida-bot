@@ -10,8 +10,6 @@ const RESULT =
         -->
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            class="is-primary"
             viewBox="0 0 16 16"
             height="100%"
             style="display: none;"
@@ -61,7 +59,7 @@ const RESULT =
                     title="${STRINGS.TEMPLATE.RESULT.LINK_PDF}"
                 >
                     <span class="icon is-medium">
-                        <svg viewBox="0 0 16 16" width="100%">
+                        <svg viewBox="0 0 16 16" width="100%" class="fill-primary">
                             <use href="#idabot-pdf"></use>
                         </svg>
                     </span>
@@ -77,7 +75,7 @@ const RESULT =
                     title="${STRINGS.TEMPLATE.RESULT.LINK_SEARCH}"
                 >
                     <span class="icon is-medium">
-                        <svg viewBox="0 0 16 16" width="100%">
+                        <svg viewBox="0 0 16 16" width="100%" class="fill-primary">
                             <use href="#idabot-search"></use>
                         </svg>
                     </span>
@@ -93,7 +91,7 @@ const RESULT =
                     title="${STRINGS.TEMPLATE.RESULT.LINK_ARCHIVE}"
                 >
                     <span class="icon is-medium">
-                        <svg viewBox="0 0 16 16" width="100%">
+                        <svg viewBox="0 0 16 16" width="100%" class="fill-primary">
                             <use
                                 href="#idabot-link"
                                 style="width 100%; height: 100%;"
@@ -128,7 +126,7 @@ const RESULT =
                     title="${STRINGS.TEMPLATE.RESULT.LINK_PDF}"
                 >
                     <span class="icon is-medium">
-                        <svg viewBox="0 0 16 16" width="100%">
+                        <svg viewBox="0 0 16 16" width="100%" class="fill-primary">
                             <use href="#idabot-pdf"></use>
                         </svg>
                     </span>
@@ -144,7 +142,7 @@ const RESULT =
                     title="${STRINGS.TEMPLATE.RESULT.LINK_SEARCH}"
                 >
                     <span class="icon is-medium">
-                        <svg viewBox="0 0 16 16" width="100%">
+                        <svg viewBox="0 0 16 16" width="100%" class="fill-primary">
                             <use href="#idabot-search"></use>
                         </svg>
                     </span>
@@ -160,7 +158,7 @@ const RESULT =
                     title="${STRINGS.TEMPLATE.RESULT.LINK_ARCHIVE}"
                 >
                     <span class="icon is-medium">
-                        <svg viewBox="0 0 16 16" width="100%">
+                        <svg viewBox="0 0 16 16" width="100%" class="fill-primary">
                             <use
                                 href="#idabot-link"
                                 style="width 100%; height: 100%;"

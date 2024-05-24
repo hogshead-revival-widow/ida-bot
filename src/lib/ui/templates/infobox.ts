@@ -9,7 +9,7 @@ const INFOBOX =
         <div
             class="card has-text-left"
             id="${ID.CONTENT}"
-            style="min-width: 100%; z-index:1000;"
+            style="min-width: 100%; z-index:1000"
         >
             <div class="card-content">
                 <!--
@@ -25,10 +25,13 @@ const INFOBOX =
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4">${STRINGS.TEMPLATE.INFO_BOX.TITLE}</p>
+                        <h2 class="title is-4">${STRINGS.TEMPLATE.INFO_BOX.TITLE}</h2>
                         <p class="subtitle is-6">
-                            <a href="${STRINGS.TEMPLATE.INFO_BOX.MAIL_QUESTION_MAILTO}"
-                                >${STRINGS.TEMPLATE.INFO_BOX.MAIL_QUESTION_LABEL}</a
+                            <a
+                                href="${STRINGS.TEMPLATE.INFO_BOX.MAIL_QUESTION_MAILTO}"
+                                title="Mail mit Frage zum Bot schreiben"
+                                >Mail:
+                                ${STRINGS.TEMPLATE.INFO_BOX.MAIL_QUESTION_LABEL}</a
                             >
                         </p>
                     </div>
